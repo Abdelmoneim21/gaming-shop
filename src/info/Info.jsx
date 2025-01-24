@@ -11,10 +11,13 @@ function Info() {
           <MdToys size={50} color="#0e2c6c" />
         </div>
         <div className="text">
-          <h1 className="text-semibold text-2xl mb-3">"Toys for all ages "</h1>
+          <h1 className="text-semibold text-2xl mb-3">
+            &quot; Toys for all ages &quot;
+          </h1>
           <p>
-            "whether for my toddler or pre-teen, this store has something for
-            <br></br> everyone. The toys are fun and educational "
+            &quot;whether for my toddler or pre-teen, this store has something
+            for
+            <br></br> everyone. The toys are fun and educational &quot;
           </p>
         </div>
       </div>
@@ -24,11 +27,12 @@ function Info() {
         </div>
         <div className="text">
           <h1 className="text-semibold text-2xl mb-3">
-            "Great service and amazing toys! "
+            &quot;Great service and amazing toys! &quot;
           </h1>
           <p>
-            "We had an issue with a toy, and the staff was quick to help. My son
-            <br></br> is thrilled with his new toy! "
+            &quot;We had an issue with a toy, and the staff was quick to help.
+            My son
+            <br></br> is thrilled with his new toy! &quot;
           </p>
         </div>
       </div>
@@ -38,11 +42,12 @@ function Info() {
         </div>
         <div className="text">
           <h1 className="text-semibold text-2xl mb-3">
-            "Perfect for birthday gifts! "
+            &quot;Perfect for birthday gifts! &quot;
           </h1>
           <p>
-            "I always find great gifts for my nephews here. The toys are unique
-            <br></br> and always a hit parties. "
+            &quot;I always find great gifts for my nephews here. The toys are
+            unique
+            <br></br> and always a hit parties. &quot;
           </p>
         </div>
       </div>
@@ -52,11 +57,12 @@ function Info() {
         </div>
         <div className="text">
           <h1 className="text-semibold text-2xl mb-3">
-            "My son's favourite Site! "
+            &quot;My son&apos;s favourite Site! &quot;
           </h1>
           <p>
-            "We visit often, and my son is never disappointed. Greate staff and
-            <br></br> toys that keep him entertained! "
+            &quot;We visit often, and my son is never disappointed. Greate staff
+            and
+            <br></br> toys that keep him entertained! &quot;
           </p>
         </div>
       </div>
