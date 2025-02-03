@@ -48,7 +48,7 @@ function Header() {
         </div>
         <div className="head-img ">
           <img
-            src="/public/salla-updated.jpg"
+            src="/salla-updated.jpg"
             alt="content-image"
             className="rounded-xl"
           />

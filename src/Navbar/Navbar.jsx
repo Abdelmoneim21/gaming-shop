@@ -1,7 +1,7 @@
 import { IoCall } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <div className="navbar flex items-center py-3">
@@ -20,7 +20,9 @@ function Navbar() {
           </h2>
         </div>
         <div className="user flex ml-[20%] items-center">
-          <FaUser size={30} color="#692e82" className="" />
+          <Link to="/login">
+            <FaUser size={30} color="#692e82" className="" />
+          </Link>
           <p className="border-r-2 m-3 h-[100%] text-black"></p>
           <FaShoppingCart size={30} color="#692e82" />
         </div>

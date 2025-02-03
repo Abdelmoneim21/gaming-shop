@@ -12,7 +12,7 @@ function OurProducts() {
       <div className="categories flex justify-center gap-5 w-[85%] m-auto ">
         <div className="category hover:scale-[104%] transition-all duration-300">
           <img
-            src="/public/3_copy.webp"
+            src="/3_copy.webp"
             alt="3+"
             className="rounded-t-xl 
 "
@@ -24,7 +24,7 @@ function OurProducts() {
         </div>
         <div className="category hover:scale-[104%] transition-all duration-300">
           <img
-            src="/public/0-1_copy.webp"
+            src="/0-1_copy.webp"
             alt="3+"
             className="rounded-t-xl 
 "
@@ -36,7 +36,7 @@ function OurProducts() {
         </div>
         <div className="category hover:scale-[104%] transition-all duration-300">
           <img
-            src="/public/2-3_copy.webp"
+            src="/2-3_copy.webp"
             alt="3+"
             className="rounded-t-xl 
 "
