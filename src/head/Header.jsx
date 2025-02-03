@@ -4,6 +4,7 @@ import { MdOutlineToys } from "react-icons/md";
 import { TbCategoryPlus } from "react-icons/tb";
 import { FaBoxOpen } from "react-icons/fa";
 import { MdCall } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -20,9 +21,11 @@ function Header() {
           </div>
           <div className="flex  items-center px-5 py-3 gap-2 transition-all duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
             <MdOutlineToys size={20} color="#692e82" />
-            <h1 className="text-l font-semibold text-[#692e82]">
-              All Products
-            </h1>
+            <Link to="/products">
+              <h1 className="text-l font-semibold text-[#692e82]">
+                All Products
+              </h1>
+            </Link>
           </div>
           <div className="flex  items-center px-5 py-3 gap-2 transition-all duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
             <TbCategoryPlus size={20} color="#692e82" />

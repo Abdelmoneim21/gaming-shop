@@ -6,6 +6,7 @@ import Info from "./info/Info";
 import Navbar from "./Navbar/Navbar";
 import OurProducts from "./our-products/ourProducts";
 import Login from "./Login/Login";
+import AllProducts from "./all-products/AllProducts";
 function App() {
   return (
     <div className="app">
@@ -23,6 +24,7 @@ function App() {
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/products" element={<AllProducts />} />
       </Routes>
     </div>
   );
