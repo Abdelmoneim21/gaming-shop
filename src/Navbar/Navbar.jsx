@@ -16,17 +16,17 @@ function Navbar() {
       </div>
       <div className="info flex">
         <div className="call flex items-center gap-3">
-          <IoCall size={30} color="#692e82" />
-          <h2 className="text-2xl text-[#692e82] font-semibold">
+          <IoCall size={30} color="#0e2c6c" />
+          <h2 className="text-2xl text-[#0e2c6c] font-semibold">
             +201068258565
           </h2>
         </div>
         <div className="user flex ml-[20%] items-center">
           <Link to="/login">
-            <FaUser size={30} color="#692e82" className="" />
+            <FaUser size={30} color="#0e2c6c" className="" />
           </Link>
           <p className="border-r-2 m-3 h-[100%] text-black"></p>
-          <FaShoppingCart size={30} color="#692e82" />
+          <FaShoppingCart size={30} color="#0e2c6c" />
         </div>
       </div>
     </div>
