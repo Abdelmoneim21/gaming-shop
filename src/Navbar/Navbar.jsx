@@ -6,11 +6,13 @@ function Navbar() {
   return (
     <div className="navbar flex items-center py-3">
       <div className="logo w-[60%]">
-        <img
-          src="/public/final_9d3e36c7-8c80-4085-8b23-fc0fb5966366.png"
-          alt="logo"
-          className="ml-[60%]"
-        />
+        <Link to="/">
+          <img
+            src="/final_9d3e36c7-8c80-4085-8b23-fc0fb5966366.png"
+            alt="logo"
+            className="ml-[60%]"
+          />
+        </Link>
       </div>
       <div className="info flex">
         <div className="call flex items-center gap-3">

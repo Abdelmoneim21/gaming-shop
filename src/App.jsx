@@ -7,7 +7,12 @@ import Navbar from "./Navbar/Navbar";
 import OurProducts from "./our-products/ourProducts";
 import Login from "./Login/Login";
 import AllProducts from "./all-products/AllProducts";
+import Filter from "./filter/Filter";
+import { useState } from "react";
+
 function App() {
+  const [category, setCategory] = useState("");
+
   return (
     <div className="app">
       <Navbar />
@@ -17,7 +22,7 @@ function App() {
           element={
             <div>
               <Header />
-              <OurProducts />
+              <OurProducts category={category} setCategory={setCategory} />
               <Info />
               <Footer />
             </div>
@@ -25,6 +30,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/products" element={<AllProducts />} />
+        <Route path="/filter" element={<Filter category={category} />} />
       </Routes>
     </div>
   );
