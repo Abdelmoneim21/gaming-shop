@@ -1,94 +1,102 @@
 import { MdOutlineMenu } from "react-icons/md";
 import { IoHome } from "react-icons/io5";
-import { MdOutlineToys } from "react-icons/md";
+import { MdOutlineToys, MdCall } from "react-icons/md";
 import { TbCategoryPlus } from "react-icons/tb";
 import { FaBoxOpen } from "react-icons/fa";
-import { MdCall } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function Header() {
-  const [show, setShow] = useState(false);
-  //0e2c6c
+  const [showCategories, setShowCategories] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="head flex w-[80%] m-auto gap-4 mt-[30px]">
-      <div className="sidebar w-[28%]  rounded-lg shadow-lg border border-gray-200 ">
-        <div className="top flex bg-[#0e2c6c] text-[#fff] items-center px-5 py-3 gap-2">
+    <div className="w-[90%] mx-auto mt-6 flex flex-col md:flex-row gap-4">
+      {/* Sidebar */}
+      <div className="md:w-[28%] w-full rounded-lg shadow-lg border border-gray-200">
+        {/* Sidebar Header */}
+        <div
+          className="flex bg-[#0e2c6c] text-white items-center px-5 py-3 gap-2 cursor-pointer md:cursor-default"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
           <MdOutlineMenu size={30} />
           <h1 className="text-xl font-semibold">SHOP BY</h1>
         </div>
-        <div className="cat">
-          <div className="home flex  items-center px-5 py-3 gap-2 transition-all duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 ">
+
+        {/* Sidebar Content (Toggles in Mobile) */}
+        <div className={`${sidebarOpen ? "block" : "hidden"} md:block`}>
+          <div className="flex items-center px-5 py-3 gap-2 hover:bg-[#feffc6] transition-all">
             <IoHome size={20} color="#0e2c6c" />
-            <h1 className="text-l font-semibold text-[#0e2c6c] ">Home</h1>
+            <h1 className="text-lg font-semibold text-[#0e2c6c]">Home</h1>
           </div>
-          <div className="flex  items-center px-5 py-3 gap-2 transition-all duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
-            <MdOutlineToys size={20} color="#0e2c6c" />
-            <Link to="/products">
-              <h1 className="text-l font-semibold text-[#0e2c6c]">
+
+          <Link to="/products">
+            <div className="flex items-center px-5 py-3 gap-2 hover:bg-[#feffc6] transition-all">
+              <MdOutlineToys size={20} color="#0e2c6c" />
+              <h1 className="text-lg font-semibold text-[#0e2c6c]">
                 All Products
               </h1>
-            </Link>
-          </div>
+            </div>
+          </Link>
+
+          {/* Categories with Hover Effect */}
           <div
-            className="hover-controller transition-all cursor-pointer duration-300 ease-in-out"
-            onMouseEnter={() => setShow(true)}
-            onMouseLeave={() => setShow(false)}
+            className="cursor-pointer"
+            onMouseEnter={() => setShowCategories(true)}
+            onMouseLeave={() => setShowCategories(false)}
           >
-            <div className="flex  items-center px-5 py-3 gap-2 transition-all cursor-pointer duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
+            <div className="flex items-center px-5 py-3 gap-2 hover:bg-[#feffc6] transition-all">
               <TbCategoryPlus size={20} color="#0e2c6c" />
-              <h1 className="text-l font-semibold text-[#0e2c6c]">
-                categories
+              <h1 className="text-lg font-semibold text-[#0e2c6c]">
+                Categories
               </h1>
             </div>
-            {show ? (
-              <div className="sub-categories text-[#0e2c6c] px-10">
-                <h2 className=" transition-all cursor-pointer duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
-                  {" "}
-                  > Smart play
+            {showCategories && (
+              <div className="text-[#0e2c6c] px-10 space-y-2">
+                <h2 className="hover:bg-[#feffc6] transition-all p-2">
+                  ➤ Smart Play
                 </h2>
-                <h2 className=" transition-all cursor-pointer duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
-                  {" "}
-                  > For Girls
+                <h2 className="hover:bg-[#feffc6] transition-all p-2">
+                  ➤ For Girls
                 </h2>
-                <h2 className=" transition-all cursor-pointer duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
-                  {" "}
-                  > Mix
-                </h2>
-                <h2 className=" transition-all cursor-pointer duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
-                  {" "}
-                  > active <span className="px-3">wheels</span>
+                <h2 className="hover:bg-[#feffc6] transition-all p-2">➤ Mix</h2>
+                <h2 className="hover:bg-[#feffc6] transition-all p-2">
+                  ➤ Active <span className="px-3">Wheels</span>
                 </h2>
               </div>
-            ) : null}
+            )}
           </div>
-          <div className="flex  items-center px-5 py-3 gap-2 transition-all duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
+
+          <div className="flex items-center px-5 py-3 gap-2 hover:bg-[#feffc6] transition-all">
             <FaBoxOpen size={20} color="#0e2c6c" />
-            <h1 className="text-l font-semibold text-[#0e2c6c]">bundles</h1>
+            <h1 className="text-lg font-semibold text-[#0e2c6c]">Bundles</h1>
           </div>
-          <div className="flex  items-center px-5 py-3 gap-2 transition-all duration-300 ease-in-out hover:bg-[#feffc6] hover:scale-102 mt-3">
+
+          <div className="flex items-center px-5 py-3 gap-2 hover:bg-[#feffc6] transition-all">
             <MdCall size={20} color="#0e2c6c" />
-            <h1 className="text-l font-semibold text-[#0e2c6c]">contact</h1>
+            <h1 className="text-lg font-semibold text-[#0e2c6c]">Contact</h1>
           </div>
         </div>
       </div>
-      <div className="content">
-        <div className="search ">
-          <input
-            type="search"
-            placeholder="Search"
-            className="p-5 bg-[#ddd] rounded mb-3 w-[100%]"
-          />
-        </div>
-        <div className="head-img ">
-          <img
-            src="/salla-updated.jpg"
-            alt="content-image"
-            className="rounded-xl"
-          />
-        </div>
+
+      {/* Search & Image Section */}
+      <div className="flex-1">
+        {/* Search Bar */}
+        <input
+          type="search"
+          placeholder="Search"
+          className="p-3 bg-gray-200 rounded w-full mb-3"
+        />
+
+        {/* Image */}
+        <img
+          src="/salla-updated.jpg"
+          alt="content-image"
+          className="rounded-xl w-full"
+        />
       </div>
     </div>
   );
 }
+
 export default Header;

@@ -2,45 +2,46 @@ import { Link } from "react-router-dom";
 
 function OurProducts({ setCategory }) {
   return (
-    <div className="our-products mt-[10%] mb-[10%]">
-      <div className="top mb-[6%]">
-        <h1 className="text-[#f00] text-xl text-center font-semibold">
-          Our Products
-        </h1>
-        <h1 className="text-[#0e2c6c] text-3xl font-bold text-center mt-[20px]">
-          Collection list
+    <div className="our-products my-16 px-4">
+      {/* Heading Section */}
+      <div className="top mb-10 text-center">
+        <h1 className="text-red-500 text-xl font-semibold">Our Products</h1>
+        <h1 className="text-[#0e2c6c] text-3xl font-bold mt-5">
+          Collection List
         </h1>
       </div>
-      <div className="categories flex justify-center gap-5 w-[85%] m-auto">
+
+      {/* Categories Grid */}
+      <div className="categories grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-[90%] mx-auto">
         {/* Category: +3 */}
         <Link to="/filter" onClick={() => setCategory("+3")}>
-          <div className="category hover:scale-[104%] transition-all duration-300">
-            <img src="/3_copy.webp" alt="3+" className="rounded-t-xl" />
+          <div className="category hover:scale-105 transition-all duration-300 shadow-md rounded-xl overflow-hidden">
+            <img src="/3_copy.webp" alt="3+" className="w-full" />
             <div className="txt text-center py-3 bg-[#f6f7fa]">
               <h2 className="font-bold text-lg text-[#0e2c6c]">+3 Years</h2>
-              <p className="text-[#aaa]">36 items</p>
+              <p className="text-gray-500">36 items</p>
             </div>
           </div>
         </Link>
 
         {/* Category: 0-1 */}
         <Link to="/filter" onClick={() => setCategory("0-1")}>
-          <div className="category hover:scale-[104%] transition-all duration-300">
-            <img src="/0-1_copy.webp" alt="0-1" className="rounded-t-xl" />
+          <div className="category hover:scale-105 transition-all duration-300 shadow-md rounded-xl overflow-hidden">
+            <img src="/0-1_copy.webp" alt="0-1" className="w-full" />
             <div className="txt text-center py-3 bg-[#f6f7fa]">
               <h2 className="font-bold text-lg text-[#0e2c6c]">0-1 Years</h2>
-              <p className="text-[#aaa]">29 items</p>
+              <p className="text-gray-500">29 items</p>
             </div>
           </div>
         </Link>
 
         {/* Category: 1-3 */}
         <Link to="/filter" onClick={() => setCategory("1-3")}>
-          <div className="category hover:scale-[104%] transition-all duration-300">
-            <img src="/2-3_copy.webp" alt="1-3" className="rounded-t-xl" />
+          <div className="category hover:scale-105 transition-all duration-300 shadow-md rounded-xl overflow-hidden">
+            <img src="/2-3_copy.webp" alt="1-3" className="w-full" />
             <div className="txt text-center py-3 bg-[#f6f7fa]">
               <h2 className="font-bold text-lg text-[#0e2c6c]">1-3 Years</h2>
-              <p className="text-[#aaa]">36 items</p>
+              <p className="text-gray-500">36 items</p>
             </div>
           </div>
         </Link>
