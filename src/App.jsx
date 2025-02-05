@@ -9,6 +9,7 @@ import Login from "./Login/Login";
 import AllProducts from "./all-products/AllProducts";
 import Filter from "./filter/Filter";
 import { useState } from "react";
+import ProductDetails from "./product-details/ProductDetails";
 
 function App() {
   const [category, setCategory] = useState("");
@@ -31,6 +32,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/products" element={<AllProducts />} />
         <Route path="/filter" element={<Filter category={category} />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
       </Routes>
     </div>
   );
