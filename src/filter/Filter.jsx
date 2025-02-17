@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../rtk/slices/productsSlice";
 import { Link } from "react-router-dom";
 
 export default function Filter({ category }) {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const { products, status } = useSelector((state) => state.products);
 
+  // Fetch products when the component mounts or category changes
   useEffect(() => {
-    fetch("http://localhost:5000/toys/")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, [category]);
+    if (status === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, status]);
 
+  // Filter products based on the category passed as a prop
   const filteredProducts = products.filter(
     (product) => product.category === category
   );
@@ -20,6 +24,11 @@ export default function Filter({ category }) {
       <h1 className="text-3xl font-bold text-center text-[#0e2c6c] mb-6">
         Products in Category: <span className="text-[#ff8808]">{category}</span>
       </h1>
+
+      {status === "loading" && <p className="text-center">Loading...</p>}
+      {status === "failed" && (
+        <p className="text-center text-red-500">Failed to load products.</p>
+      )}
 
       {filteredProducts.length === 0 ? (
         <p className="text-center text-gray-500">No products available.</p>
