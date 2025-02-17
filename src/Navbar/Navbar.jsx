@@ -13,11 +13,9 @@ function Navbar() {
         {/* Logo */}
         <div className="w-1/3">
           <Link to="/">
-            <img
-              src="/final_9d3e36c7-8c80-4085-8b23-fc0fb5966366.png"
-              alt="logo"
-              className="w-32 md:w-40"
-            />
+            <h1 className="w-32 md:w-40 text-[#0e2c6c] font-extrabold text-[20px] ">
+              BABA <span className="block">ABDO</span>
+            </h1>
           </Link>
         </div>
 
@@ -37,7 +35,9 @@ function Navbar() {
               <FaUser size={24} color="#0e2c6c" />
             </Link>
             <div className="border-r-2 h-6"></div>
-            <FaShoppingCart size={24} color="#0e2c6c" />
+            <Link to="/cart">
+              <FaShoppingCart size={24} color="#0e2c6c" />
+            </Link>
           </div>
         </div>
 

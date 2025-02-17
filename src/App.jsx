@@ -10,6 +10,13 @@ import AllProducts from "./all-products/AllProducts";
 import Filter from "./filter/Filter";
 import { useState } from "react";
 import ProductDetails from "./product-details/ProductDetails";
+import Cart from "./cart/Cart_";
+import Checkout from "./checkout/Checkout";
+import BoysToys from "./forBoys/ForBoys";
+import GirlsToys from "./forBoys/ForGirls";
+import Mix from "./forBoys/Mix";
+import AdminDashboard from "./adminDashboard/AdminDashboard";
+import ProductForm from "./adminDashboard/ProductForm";
 
 function App() {
   const [category, setCategory] = useState("");
@@ -33,6 +40,14 @@ function App() {
         <Route path="/products" element={<AllProducts />} />
         <Route path="/filter" element={<Filter category={category} />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/boys" element={<BoysToys />} />
+        <Route path="/girls" element={<GirlsToys />} />
+        <Route path="/mix" element={<Mix />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/add" element={<ProductForm />} />
+        <Route path="/admin/edit/:id" element={<ProductForm />} />
       </Routes>
     </div>
   );

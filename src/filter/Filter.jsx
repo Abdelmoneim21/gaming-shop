@@ -5,7 +5,7 @@ export default function Filter({ category }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/toys/")
+    fetch("http://localhost:5000/toys/")
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error("Error fetching data:", error));

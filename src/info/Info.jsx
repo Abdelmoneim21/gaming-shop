@@ -1,5 +1,5 @@
 import { MdToys } from "react-icons/md";
-import { FaGears } from "react-icons/fa6";
+import { FaCog } from "react-icons/fa"; // Alternative to FaGears
 import { FaBirthdayCake } from "react-icons/fa";
 import { MdSettingsInputComposite } from "react-icons/md";
 
@@ -22,7 +22,7 @@ function Info() {
 
       {/* Item 2 */}
       <div className="item flex gap-6 items-center border rounded-xl px-6 py-8 border-[#0e2c6c] hover:scale-105 duration-300 shadow-md">
-        <FaGears size={50} color="#0e2c6c" />
+        <FaCog size={50} color="#0e2c6c" />
         <div className="text">
           <h1 className="font-semibold text-xl mb-2 text-[#0e2c6c]">
             Great service and amazing toys!

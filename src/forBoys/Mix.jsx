@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
 
-export default function AllProducts() {
+export default function Mix() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
   const [quantities, setQuantities] = useState({});
