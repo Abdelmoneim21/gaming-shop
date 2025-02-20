@@ -5,13 +5,12 @@ import { Link } from "react-router-dom";
 import { MdOutlineMenu } from "react-icons/md";
 import { IoHome } from "react-icons/io5";
 import { MdOutlineToys } from "react-icons/md";
-// import { TbCategoryPlus } from "react-icons/tb";
-
-// import { FaBoxOpen } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa"; // FontAwesome alternative
+import { FaPlus } from "react-icons/fa";
+import { MdContactSupport } from "react-icons/md";
 
 function Header() {
   const [showCategories, setShowCategories] = useState(false);
+  const [showAgeGroups, setShowAgeGroups] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -29,6 +28,8 @@ function Header() {
   const filteredProducts = (products || []).filter((product) =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const ageGroups = [...new Set(products.map((p) => p.category))];
 
   return (
     <div className="w-[90%] mx-auto mt-6 flex flex-col md:flex-row gap-4 relative">
@@ -89,6 +90,39 @@ function Header() {
                 </h2>
               </div>
             )}
+          </div>
+
+          {/* Shop by Age */}
+          <div
+            className="cursor-pointer"
+            onMouseEnter={() => setShowAgeGroups(true)}
+            onMouseLeave={() => setShowAgeGroups(false)}
+          >
+            <div className="flex items-center px-5 py-3 gap-2 hover:bg-[#feffc6] transition-all">
+              <FaPlus size={20} color="#0e2c6c" />
+              <h1 className="text-lg font-semibold text-[#0e2c6c]">
+                Shop by Age
+              </h1>
+            </div>
+            {showAgeGroups && (
+              <div className="text-[#0e2c6c] px-10 space-y-2">
+                {ageGroups.map((age) => (
+                  <h2
+                    key={age}
+                    className="hover:bg-[#feffc6] transition-all p-2"
+                  >
+                    <Link to={`/age/${age}`}>➤ {age} Years</Link>
+                  </h2>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center px-5 py-3 gap-2 hover:bg-[#feffc6] transition-all">
+            <MdContactSupport size={20} color="#0e2c6c" />
+            <Link to="/contact">
+              <h1 className="text-lg font-semibold text-[#0e2c6c]">Contact</h1>
+            </Link>
           </div>
         </div>
       </div>

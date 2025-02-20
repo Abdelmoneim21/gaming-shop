@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  cartItems: [],
+  cartItems: [], // ✅ Ensure this exists
   totalPrice: 0,
 };
 
@@ -11,11 +11,11 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const existingItem = state.cartItems.find(
-        (item) => item.id === action.payload.id // 🛑 Ensure "id" matches API format
+        (item) => item.id === action.payload.id
       );
 
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity || 1; // ✅ Allow setting custom quantity
+        existingItem.quantity += action.payload.quantity || 1;
       } else {
         state.cartItems.push({
           ...action.payload,
@@ -26,7 +26,7 @@ const cartSlice = createSlice({
       state.totalPrice = state.cartItems.reduce(
         (acc, item) => acc + item.price * item.quantity,
         0
-      ); // ✅ Ensure total price updates correctly
+      );
     },
 
     removeFromCart: (state, action) => {

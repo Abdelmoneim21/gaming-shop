@@ -66,11 +66,11 @@
     },
     {
       "id": "267d",
-      "title": "toys all the time",
+      "title": "editing this toy",
       "image": "https://m.media-amazon.com/images/I/41cX7vTDtuL._SX300_SY300_QL70_FMwebp_.jpg",
       "category": "0-1",
-      "price": "100",
-      "gender": "girls"
+      "price": "200",
+      "gender": "boys"
     }
   ]
 }

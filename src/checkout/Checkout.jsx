@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { clearCart } from "../rtk/slices/cartSlice"; // Import clearCart action
 
 export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("cash");
@@ -8,6 +10,15 @@ export default function Checkout() {
     cvv: "",
     name: "",
   });
+  const [address, setAddress] = useState({
+    fullName: "",
+    phone: "",
+    streetAddress: "",
+  });
+
+  const cartItems = useSelector((state) => state.cart?.cartItems || []);
+  const totalPrice = useSelector((state) => state.cart?.totalPrice || 0);
+  const dispatch = useDispatch();
 
   const handlePaymentChange = (method) => {
     setPaymentMethod(method);
@@ -16,12 +27,51 @@ export default function Checkout() {
     }
   };
 
-  const handleCardChange = (e) => {
-    setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (paymentMethod === "credit") {
+      setCardDetails({ ...cardDetails, [name]: value });
+    } else {
+      setAddress({ ...address, [name]: value });
+    }
+  };
+
+  const sendWhatsAppMessage = () => {
+    const adminPhoneNumber = "+201099161140"; // Admin's WhatsApp number
+
+    const cartDetails = cartItems
+      .map(
+        (item) =>
+          `- *${item.title}* (x${item.quantity}): $${
+            item.price * item.quantity
+          }`
+      )
+      .join("\n");
+
+    const addressDetails =
+      paymentMethod === "cash"
+        ? `\n\n📍 *Address:*\n👤 *Full Name:* ${address.fullName}\n📞 *Phone:* ${address.phone}\n🏠 *Street:* ${address.streetAddress}`
+        : "";
+
+    const message = `🛒 *New Order Received!*\n\n${cartDetails}\n\n💰 *Total Price:* $${totalPrice}\n🛍️ *Payment Method:* ${paymentMethod.toUpperCase()}${addressDetails}`;
+
+    const whatsappURL = `https://wa.me/${adminPhoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(whatsappURL, "_blank");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log("Submitting Order. Cart Items:", cartItems);
+
+    if (!cartItems || cartItems.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
     if (
       paymentMethod === "credit" &&
       (!cardDetails.cardNumber ||
@@ -32,6 +82,9 @@ export default function Checkout() {
       alert("Please fill in all credit card details.");
       return;
     }
+
+    sendWhatsAppMessage();
+    dispatch(clearCart()); // ✅ Clear cart after checkout
     alert(`Order placed successfully with ${paymentMethod} payment!`);
   };
 
@@ -71,58 +124,44 @@ export default function Checkout() {
           </div>
         </div>
 
-        {/* Credit Card Details (Only if selected) */}
-        {paymentMethod === "credit" && (
+        {/* Address Fields (Only for Cash on Delivery) */}
+        {paymentMethod === "cash" && (
           <div className="space-y-3">
             <div>
-              <label className="block font-medium">Cardholder Name</label>
+              <label className="block font-medium">Full Name</label>
               <input
                 type="text"
-                name="name"
-                value={cardDetails.name}
-                onChange={handleCardChange}
+                name="fullName"
+                value={address.fullName}
+                onChange={handleInputChange}
                 placeholder="John Doe"
                 className="w-full p-2 border rounded-md"
                 required
               />
             </div>
             <div>
-              <label className="block font-medium">Card Number</label>
+              <label className="block font-medium">Phone Number</label>
               <input
                 type="text"
-                name="cardNumber"
-                value={cardDetails.cardNumber}
-                onChange={handleCardChange}
-                placeholder="1234 5678 9012 3456"
+                name="phone"
+                value={address.phone}
+                onChange={handleInputChange}
+                placeholder="+123 456 7890"
                 className="w-full p-2 border rounded-md"
                 required
               />
             </div>
-            <div className="flex gap-3">
-              <div className="w-1/2">
-                <label className="block font-medium">Expiry Date</label>
-                <input
-                  type="text"
-                  name="expiryDate"
-                  value={cardDetails.expiryDate}
-                  onChange={handleCardChange}
-                  placeholder="MM/YY"
-                  className="w-full p-2 border rounded-md"
-                  required
-                />
-              </div>
-              <div className="w-1/2">
-                <label className="block font-medium">CVV</label>
-                <input
-                  type="text"
-                  name="cvv"
-                  value={cardDetails.cvv}
-                  onChange={handleCardChange}
-                  placeholder="123"
-                  className="w-full p-2 border rounded-md"
-                  required
-                />
-              </div>
+            <div>
+              <label className="block font-medium">Street Address</label>
+              <input
+                type="text"
+                name="streetAddress"
+                value={address.streetAddress}
+                onChange={handleInputChange}
+                placeholder="123 Main St, City, Country"
+                className="w-full p-2 border rounded-md"
+                required
+              />
             </div>
           </div>
         )}

@@ -13,9 +13,11 @@ function Navbar() {
         {/* Logo */}
         <div className="w-1/3">
           <Link to="/">
-            <h1 className="w-32 md:w-40 text-[#0e2c6c] font-extrabold text-[20px] ">
-              BABA <span className="block">ABDO</span>
-            </h1>
+            <img
+              src="/3.png"
+              alt="logo of the game shop"
+              className="w-[40%] h-[50%]"
+            />
           </Link>
         </div>
 

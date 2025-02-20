@@ -1,4 +1,6 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "./rtk/slices/authSlice";
 import "./App.css";
 import Footer from "./Footer/Footer";
 import Header from "./head/header";
@@ -17,13 +19,29 @@ import GirlsToys from "./forBoys/ForGirls";
 import Mix from "./forBoys/Mix";
 import AdminDashboard from "./adminDashboard/AdminDashboard";
 import ProductForm from "./adminDashboard/ProductForm";
+import Contact from "./contact/Contact";
+import AgeProducts from "./ageProduct/AgeProducts";
 
 function App() {
   const [category, setCategory] = useState("");
+  const admin = useSelector((state) => state.auth.admin);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className="app">
       <Navbar />
+      {admin && (
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white p-2 rounded-md m-4"
+        >
+          Logout
+        </button>
+      )}
       <Routes>
         <Route
           path="/"
@@ -45,9 +63,30 @@ function App() {
         <Route path="/boys" element={<BoysToys />} />
         <Route path="/girls" element={<GirlsToys />} />
         <Route path="/mix" element={<Mix />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/add" element={<ProductForm />} />
-        <Route path="/admin/edit/:id" element={<ProductForm />} />
+        <Route path="/age/:age" element={<AgeProducts />} />
+
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin"
+          element={admin ? <AdminDashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/admin/add"
+          element={admin ? <ProductForm /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/admin/edit/:id"
+          element={admin ? <ProductForm /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/contact"
+          element={
+            <>
+              <Contact /> <Footer />
+            </>
+          }
+        />
       </Routes>
     </div>
   );

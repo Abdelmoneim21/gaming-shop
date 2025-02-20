@@ -52,7 +52,7 @@ export default function ProductDetails() {
         />
         <div>
           <h1 className="text-3xl font-bold text-[#0e2c6c]">{product.title}</h1>
-          <p className="text-gray-500 text-lg mt-2">${product.price}</p>
+          <p className="text-gray-500 text-lg mt-2">EGP{product.price}</p>
           <p className="mt-4">{product.description}</p>
           <button
             onClick={handleAddToCart}

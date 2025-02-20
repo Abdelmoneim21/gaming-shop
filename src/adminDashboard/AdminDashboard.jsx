@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   fetchProducts,
   addProduct,
   editProduct,
   deleteProduct,
 } from "../rtk/slices/productsSlice";
+import { logout } from "../rtk/slices/authSlice";
 
 export default function AdminDashboard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const products = useSelector((state) => state.products.products);
+  const admin = useSelector((state) => state.auth.admin);
+
   const [form, setForm] = useState({
     id: "",
     title: "",
@@ -19,12 +24,16 @@ export default function AdminDashboard() {
     gender: "",
   });
   const [editing, setEditing] = useState(false);
-  const [loading, setLoading] = useState(false); // Loading state for form submission
-  const [error, setError] = useState(""); // Error state for form submission
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    if (!admin) {
+      navigate("/login");
+    } else {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, admin, navigate]);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,16 +41,14 @@ export default function AdminDashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(""); // Reset previous errors
+    setError("");
 
     try {
       if (editing) {
-        await dispatch(editProduct(form)); // Send updated product to Redux
+        await dispatch(editProduct(form));
       } else {
         await dispatch(addProduct(form));
       }
-
-      // Reset the form
       setForm({
         id: "",
         title: "",
@@ -59,14 +66,7 @@ export default function AdminDashboard() {
   };
 
   const handleEdit = (product) => {
-    setForm({
-      id: product.id, // Ensure ID is preserved
-      title: product.title,
-      image: product.image,
-      category: product.category,
-      price: product.price,
-      gender: product.gender,
-    });
+    setForm(product);
     setEditing(true);
   };
 
@@ -76,13 +76,23 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-[#0e2c6c] mb-4">
-        Admin Dashboard
-      </h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold text-[#0e2c6c]">Admin Dashboard</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg"
+        >
+          Logout
+        </button>
+      </div>
 
-      {/* Add / Edit Form */}
       <form
         onSubmit={handleSubmit}
         className="bg-white p-4 rounded-lg shadow-md mb-6"
@@ -144,7 +154,6 @@ export default function AdminDashboard() {
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </form>
 
-      {/* Product Table */}
       <table className="w-full bg-white shadow-md rounded-lg">
         <thead>
           <tr className="bg-gray-200">
