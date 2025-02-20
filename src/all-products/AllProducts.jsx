@@ -55,7 +55,7 @@ export default function AllProducts() {
         {sortedProducts.map((product) => (
           <div
             key={product.id}
-            className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-4 flex flex-col items-center text-center"
+            className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-4 flex flex-col items-center text-center min-h-[400px]"
           >
             {/* Clickable Product Image */}
             <Link
@@ -69,9 +69,9 @@ export default function AllProducts() {
               />
             </Link>
 
-            {/* Clickable Product Title */}
+            {/* Product Title */}
             <Link to={`/product/${product.id}`}>
-              <h3 className="text-lg font-semibold mt-1 hover:text-blue-600">
+              <h3 className="text-lg font-semibold mt-2 hover:text-blue-600">
                 {product.title}
               </h3>
             </Link>
@@ -80,56 +80,59 @@ export default function AllProducts() {
               LE {product.price} EGP
             </p>
 
-            {/* Add to Cart Section */}
-            <div className="flex items-center mt-3 space-x-2">
+            {/* Quantity and Add to Cart Section - Ensuring Alignment */}
+            <div className="flex flex-col items-center justify-between w-full mt-auto">
+              {/* Quantity Controls */}
+              <div className="flex items-center space-x-2 mb-2">
+                <button
+                  className="px-3 py-1 bg-red-400 text-white rounded-lg"
+                  onClick={() =>
+                    handleQuantityChange(
+                      product.id,
+                      (quantities[product.id] || 1) - 1
+                    )
+                  }
+                >
+                  ➖
+                </button>
+                <input
+                  type="number"
+                  min="1"
+                  value={quantities[product.id] || 1}
+                  onChange={(e) =>
+                    handleQuantityChange(product.id, parseInt(e.target.value))
+                  }
+                  className="w-12 text-center border border-gray-300 rounded-lg"
+                />
+                <button
+                  className="px-3 py-1 bg-green-400 text-white rounded-lg"
+                  onClick={() =>
+                    handleQuantityChange(
+                      product.id,
+                      (quantities[product.id] || 1) + 1
+                    )
+                  }
+                >
+                  ➕
+                </button>
+              </div>
+
+              {/* Add to Cart Button - Always at the Bottom */}
               <button
-                className="px-3 py-1 bg-red-400 text-white rounded-l-lg"
+                className="bg-yellow-400 hover:bg-yellow-500 text-black items-center px-4 py-2 rounded-lg flex items-center space-x-2 font-medium w-full"
                 onClick={() =>
-                  handleQuantityChange(
-                    product.id,
-                    (quantities[product.id] || 1) - 1
+                  dispatch(
+                    addToCart({
+                      ...product,
+                      quantity: quantities[product.id] || 1,
+                    })
                   )
                 }
               >
-                ➖
-              </button>
-              <input
-                type="number"
-                min="1"
-                value={quantities[product.id] || 1}
-                onChange={(e) =>
-                  handleQuantityChange(product.id, parseInt(e.target.value))
-                }
-                className="w-12 text-center border border-gray-300 rounded-lg"
-              />
-              <button
-                className="px-3 py-1 bg-green-400 text-white rounded-r-lg"
-                onClick={() =>
-                  handleQuantityChange(
-                    product.id,
-                    (quantities[product.id] || 1) + 1
-                  )
-                }
-              >
-                ➕
+                <span>🛒</span>
+                <span>Add to Cart</span>
               </button>
             </div>
-
-            {/* Add to Cart Button */}
-            <button
-              className="mt-4 bg-yellow-400 hover:bg-yellow-500 text-black w-full py-2 rounded-lg flex items-center justify-center space-x-2 font-medium"
-              onClick={() =>
-                dispatch(
-                  addToCart({
-                    ...product,
-                    quantity: quantities[product.id] || 1,
-                  })
-                )
-              }
-            >
-              <span>🛒</span>
-              <span>Add to Cart</span>
-            </button>
           </div>
         ))}
       </div>

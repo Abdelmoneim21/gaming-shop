@@ -6,6 +6,6 @@ export const store = configureStore({
   reducer: {
     products: productsReducer,
     cart: cartReducer,
-    auth: authReducer, // Add auth reducer
+    auth: authReducer,
   },
 });

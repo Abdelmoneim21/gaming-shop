@@ -30,7 +30,7 @@ export default function BoysToys() {
           boysToys.map((toy) => (
             <div
               key={toy.id}
-              className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center"
+              className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center h-full"
             >
               {/* Clickable Image */}
               <Link
@@ -46,19 +46,22 @@ export default function BoysToys() {
 
               {/* Clickable Title */}
               <Link to={`/product/${toy.id}`}>
-                <h3 className="text-lg font-semibold mt-2 hover:text-blue-600">
+                <h3 className="text-lg font-semibold mt-2 text-center hover:text-blue-600">
                   {toy.title}
                 </h3>
               </Link>
 
               <p className="text-gray-700 font-bold">LE {toy.price} EGP</p>
 
+              {/* Push button to the bottom */}
+              <div className="flex-grow"></div>
+
               {/* Add to Cart Button */}
               <button
                 onClick={() => dispatch(addToCart({ ...toy, quantity: 1 }))}
-                className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center w-full"
               >
-                🛒 Add to Cart
+                <span className="text-center w-full">🛒 Add to Cart</span>
               </button>
             </div>
           ))
