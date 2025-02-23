@@ -1,66 +1,108 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../rtk/slices/cartSlice"; // Import the action from cartSlice
+import { useParams } from "react-router-dom";
+import { addToCart } from "../rtk/slices/cartSlice"; // ✅ Import Redux action
+import { FaShoppingCart } from "react-icons/fa"; // ✅ Shopping Cart Icon
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const dispatch = useDispatch(); // Initialize dispatch
-
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    console.log("Fetching product with ID:", id, typeof id);
-
-    fetch(`http://localhost:8000/toys/${id}`) // Convert ID to a number
-      .then((res) => {
-        console.log("Response status:", res.status);
-        if (!res.ok) {
-          throw new Error("Product not found");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setProduct(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error.message);
-        setError(error.message);
-        setLoading(false);
-      });
-  }, [id]);
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
+  const token = localStorage.getItem("token");
 
   const handleAddToCart = () => {
-    if (product) {
-      dispatch(addToCart(product)); // Dispatch the action to add the product to the cart
-    }
+    dispatch(addToCart({ ...product, quantity }));
   };
 
-  if (loading) return <p className="text-center">Loading product details...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const response = await fetch(
+          `https://e-commerce-eight-blond.vercel.app/api/v1/products/${id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const data = await response.json();
+        if (!data || !data.data) throw new Error("Product not found!");
+        setProduct(data.data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [id]);
+
+  if (loading)
+    return (
+      <div className="text-center text-lg font-semibold mt-10">
+        ⏳ Loading...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="text-center text-red-500 font-bold mt-10">{error}</div>
+    );
+  if (!product)
+    return (
+      <div className="text-center text-gray-600 font-semibold mt-10">
+        No product found.
+      </div>
+    );
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="flex flex-col md:flex-row items-center gap-6">
-        <img
-          src={product.image}
-          alt={product.title}
-          className="w-full md:w-1/2 rounded-lg shadow-md"
-        />
-        <div>
-          <h1 className="text-3xl font-bold text-[#0e2c6c]">{product.title}</h1>
-          <p className="text-gray-500 text-lg mt-2">EGP{product.price}</p>
-          <p className="mt-4">{product.description}</p>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white rounded-3xl shadow-lg  p-6">
+        {/* Product Image */}
+        <div className="rounded-xl overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="w-full h-80 object-cover"
+          />
+        </div>
+
+        {/* Product Details */}
+        <div className="text-center mt-4">
+          <h1 className="text-xl font-bold text-gray-900">{product.title}</h1>
+          <p className="text-lg font-semibold text-gray-700 mt-1">
+            {product.price} LE
+          </p>
+          <p className="text-l font-semibold text-gray-900">
+            {product.description}
+          </p>
+        </div>
+
+        {/* Quantity Selector */}
+        <div className="flex justify-center items-center mt-4">
           <button
-            onClick={handleAddToCart}
-            className="mt-6 bg-[#ff8808] text-white px-6 py-3 rounded-lg hover:bg-[#e67606] transition"
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-l"
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
           >
-            Add to Cart
+            −
+          </button>
+          <span className="px-5 py-2 bg-gray-100 text-lg font-semibold">
+            {quantity}
+          </span>
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r"
+            onClick={() => setQuantity(quantity + 1)}
+          >
+            +
           </button>
         </div>
+
+        {/* Add to Cart Button */}
+        <button
+          onClick={handleAddToCart}
+          className="mt-5 w-[50%] m-auto bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition"
+        >
+          <FaShoppingCart /> Add to Cart
+        </button>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export default function AllProducts() {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.products.products);
+  const { products, status, error } = useSelector((state) => state.products);
   const [quantities, setQuantities] = useState({});
   const [sortType, setSortType] = useState("az");
 
@@ -22,11 +22,18 @@ export default function AllProducts() {
   };
 
   const sortedProducts = [...products].sort((a, b) => {
-    if (sortType === "az") return a.title.localeCompare(b.title);
-    if (sortType === "za") return b.title.localeCompare(a.title);
-    if (sortType === "low-high") return a.price - b.price;
-    if (sortType === "high-low") return b.price - a.price;
-    return 0;
+    switch (sortType) {
+      case "az":
+        return a.title.localeCompare(b.title);
+      case "za":
+        return b.title.localeCompare(a.title);
+      case "low-high":
+        return a.price - b.price;
+      case "high-low":
+        return b.price - a.price;
+      default:
+        return 0;
+    }
   });
 
   return (
@@ -34,6 +41,16 @@ export default function AllProducts() {
       <h1 className="text-3xl font-bold text-center text-purple-700 mb-6">
         Products
       </h1>
+
+      {/* Error Handling */}
+      {status === "failed" && (
+        <p className="text-red-600 font-bold text-center">{error}</p>
+      )}
+
+      {/* Loading Indicator */}
+      {status === "loading" && (
+        <p className="text-center text-blue-600 font-bold">Loading...</p>
+      )}
 
       {/* Sorting Dropdown */}
       <div className="flex justify-end mb-4">
@@ -54,12 +71,12 @@ export default function AllProducts() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {sortedProducts.map((product) => (
           <div
-            key={product.id}
+            key={product._id} // Ensure _id is used correctly
             className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-4 flex flex-col items-center text-center min-h-[400px]"
           >
             {/* Clickable Product Image */}
             <Link
-              to={`/product/${product.id}`}
+              to={`/product/${product._id}`}
               className="w-full h-40 overflow-hidden rounded-lg"
             >
               <img
@@ -70,7 +87,7 @@ export default function AllProducts() {
             </Link>
 
             {/* Product Title */}
-            <Link to={`/product/${product.id}`}>
+            <Link to={`/product/${product._id}`}>
               <h3 className="text-lg font-semibold mt-2 hover:text-blue-600">
                 {product.title}
               </h3>
@@ -80,7 +97,7 @@ export default function AllProducts() {
               LE {product.price} EGP
             </p>
 
-            {/* Quantity and Add to Cart Section - Ensuring Alignment */}
+            {/* Quantity and Add to Cart Section */}
             <div className="flex flex-col items-center justify-between w-full mt-auto">
               {/* Quantity Controls */}
               <div className="flex items-center space-x-2 mb-2">
@@ -88,8 +105,8 @@ export default function AllProducts() {
                   className="px-3 py-1 bg-red-400 text-white rounded-lg"
                   onClick={() =>
                     handleQuantityChange(
-                      product.id,
-                      (quantities[product.id] || 1) - 1
+                      product._id,
+                      (quantities[product._id] || 1) - 1
                     )
                   }
                 >
@@ -98,9 +115,9 @@ export default function AllProducts() {
                 <input
                   type="number"
                   min="1"
-                  value={quantities[product.id] || 1}
+                  value={quantities[product._id] || 1}
                   onChange={(e) =>
-                    handleQuantityChange(product.id, parseInt(e.target.value))
+                    handleQuantityChange(product._id, parseInt(e.target.value))
                   }
                   className="w-12 text-center border border-gray-300 rounded-lg"
                 />
@@ -108,8 +125,8 @@ export default function AllProducts() {
                   className="px-3 py-1 bg-green-400 text-white rounded-lg"
                   onClick={() =>
                     handleQuantityChange(
-                      product.id,
-                      (quantities[product.id] || 1) + 1
+                      product._id,
+                      (quantities[product._id] || 1) + 1
                     )
                   }
                 >
@@ -117,14 +134,15 @@ export default function AllProducts() {
                 </button>
               </div>
 
-              {/* Add to Cart Button - Always at the Bottom */}
+              {/* Add to Cart Button */}
               <button
                 className="bg-yellow-400 hover:bg-yellow-500 text-black items-center px-4 py-2 rounded-lg flex items-center space-x-2 font-medium w-full"
                 onClick={() =>
                   dispatch(
                     addToCart({
                       ...product,
-                      quantity: quantities[product.id] || 1,
+                      id: product._id, // Ensure correct ID structure
+                      quantity: quantities[product._id] || 1,
                     })
                   )
                 }

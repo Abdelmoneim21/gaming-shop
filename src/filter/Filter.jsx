@@ -19,7 +19,8 @@ export default function Filter({ category }) {
 
   // Filter products by selected category
   const filteredProducts = products.filter(
-    (product) => product.category === category
+    (product) =>
+      product.category >= category && product.category <= category + 2
   );
 
   // Sorting logic
@@ -73,10 +74,10 @@ export default function Filter({ category }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {sortedProducts.map((toy) => (
             <div
-              key={toy.id}
+              key={toy._id}
               className="bg-white shadow-lg rounded-2xl p-4 flex flex-col items-center text-center transition-transform transform hover:scale-105 duration-300"
             >
-              <Link to={`/product/${toy.id}`}>
+              <Link to={`/product/${toy._id}`}>
                 <img
                   src={toy.image}
                   alt={toy.title}

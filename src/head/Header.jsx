@@ -16,8 +16,7 @@ function Header() {
   const [showSearchResults, setShowSearchResults] = useState(false);
 
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.products.products);
-  const status = useSelector((state) => state.products.status);
+  const { products, status } = useSelector((state) => state.products);
 
   useEffect(() => {
     if (status === "idle") {
@@ -25,8 +24,10 @@ function Header() {
     }
   }, [status, dispatch]);
 
-  const filteredProducts = (products || []).filter((product) =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter(
+    (toy) =>
+      toy.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      toy.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const ageGroups = [...new Set(products.map((p) => p.category))];
@@ -147,8 +148,8 @@ function Header() {
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
                 <Link
-                  key={product.id}
-                  to={`/product/${product.id}`}
+                  key={product._id}
+                  to={`/product/${product._id}`}
                   className="block p-2 hover:bg-gray-100 flex items-center gap-2"
                   onClick={() => setShowSearchResults(false)}
                 >

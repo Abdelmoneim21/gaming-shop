@@ -7,8 +7,8 @@ export default function ProductForm() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const products = useSelector((state) => state.products.items);
-  const existingProduct = id ? products.find((p) => p.id === Number(id)) : null;
+  const products = useSelector((state) => state.products.products);
+  const existingProduct = id ? products.find((p) => p.id === id) : null; // ✅ Fix: String ID Comparison
 
   const [product, setProduct] = useState(
     existingProduct || { title: "", price: "", description: "", image: "" }
@@ -18,14 +18,18 @@ export default function ProductForm() {
     if (existingProduct) setProduct(existingProduct);
   }, [existingProduct]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (id) {
-      dispatch(editProduct({ id, updatedProduct: product }));
-    } else {
-      dispatch(addProduct(product));
+    try {
+      if (id) {
+        await dispatch(editProduct({ id, updatedProduct: product })).unwrap();
+      } else {
+        await dispatch(addProduct(product)).unwrap();
+      }
+      navigate("/admin");
+    } catch (error) {
+      console.error("Error adding/editing product:", error);
     }
-    navigate("/admin");
   };
 
   return (

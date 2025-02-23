@@ -1,81 +1,195 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// API URL
-const API_URL = "http://localhost:8000/toys";
+// Base API URL
+const API_URL = "https://e-commerce-eight-blond.vercel.app/api/v1/products";
+
+// Function to get token dynamically
+const getToken = () => localStorage.getItem("token");
 
 // Fetch all products
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async () => {
-    const response = await fetch(API_URL);
-    return response.json();
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch products");
+
+      const json = await response.json();
+      console.log("✅ Fetch Products Response:", json);
+      return json.data;
+    } catch (error) {
+      console.error("❌ Error in fetchProducts:", error);
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 // Add a new product
 export const addProduct = createAsyncThunk(
   "products/addProduct",
-  async (product) => {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...product, id: String(new Date().getTime()) }), // Ensure string ID
-    });
-    return response.json();
+  async (product, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      console.log("🔹 Sending Product Data:", product); // Debugging
+
+      const response = await fetch(
+        "https://e-commerce-eight-blond.vercel.app/api/v1/products",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(product),
+        }
+      );
+
+      console.log("🔹 Response Status:", response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("❌ API Error:", errorData);
+        throw new Error(errorData.message || "Failed to add product");
+      }
+
+      const data = await response.json();
+      console.log("✅ Added Product Response:", data);
+
+      return data.product || data;
+    } catch (error) {
+      console.error("❌ Error in addProduct:", error);
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 // Edit a product
 export const editProduct = createAsyncThunk(
   "products/editProduct",
-  async (product) => {
-    const response = await fetch(`${API_URL}/${product.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product), // Ensure correct data is sent
-    });
+  async (product, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      console.log("🔹 Editing Product:", product); // Debugging
 
-    if (!response.ok) {
-      throw new Error("Failed to update product");
+      if (!product.id) {
+        throw new Error("Product ID is missing!");
+      }
+
+      const response = await fetch(
+        `https://e-commerce-eight-blond.vercel.app/api/v1/products/${product.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(product),
+        }
+      );
+
+      console.log("🔹 Response Status:", response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("❌ API Error:", errorData);
+        throw new Error(errorData.message || "Failed to update product");
+      }
+
+      const data = await response.json();
+      console.log("✅ Updated Product Response:", data);
+
+      return data.product || product;
+    } catch (error) {
+      console.error("❌ Error in editProduct:", error);
+      return rejectWithValue(error.message);
     }
-
-    return response.json();
   }
 );
 
 // Delete a product
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
-  async (id) => {
-    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-    return id;
+  async (id, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      console.log("🔹 Deleting Product ID:", id);
+
+      if (!id) {
+        throw new Error("Product ID is missing!");
+      }
+
+      const response = await fetch(
+        `https://e-commerce-eight-blond.vercel.app/api/v1/products/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("🔹 Response Status:", response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("❌ API Error:", errorData);
+        throw new Error(errorData.message || "Failed to delete product");
+      }
+
+      console.log("✅ Product Deleted Successfully:", id);
+      return id;
+    } catch (error) {
+      console.error("❌ Error in deleteProduct:", error);
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 const productsSlice = createSlice({
   name: "products",
-  initialState: { products: [], status: "idle" },
+  initialState: { products: [], status: "idle", error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.status = "loading";
+      })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        // Adjust this line based on the response structure
-        state.products = action.payload; // Ensure action.payload is the products array
+        state.products = Array.isArray(action.payload) ? action.payload : [];
         state.status = "succeeded";
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       })
       .addCase(addProduct.fulfilled, (state, action) => {
         state.products.push(action.payload);
+      })
+      .addCase(addProduct.rejected, (state, action) => {
+        state.error = action.payload;
       })
       .addCase(editProduct.fulfilled, (state, action) => {
         const index = state.products.findIndex(
           (p) => p.id === action.payload.id
         );
-        if (index !== -1) {
-          state.products[index] = action.payload; // Update the product in the state
-        }
+        if (index !== -1) state.products[index] = action.payload;
+      })
+      .addCase(editProduct.rejected, (state, action) => {
+        state.error = action.payload;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.products = state.products.filter((p) => p.id !== action.payload);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });

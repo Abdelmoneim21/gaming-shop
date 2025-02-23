@@ -66,10 +66,7 @@ function App() {
         <Route path="/age/:age" element={<AgeProducts />} />
 
         {/* Protected Admin Routes */}
-        <Route
-          path="/admin"
-          element={admin ? <AdminDashboard /> : <Navigate to="/login" />}
-        />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route
           path="/admin/add"
           element={admin ? <ProductForm /> : <Navigate to="/login" />}

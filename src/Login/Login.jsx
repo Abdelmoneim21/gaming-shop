@@ -1,28 +1,26 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../rtk/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isAuthenticated, error } = useSelector((state) => state.auth);
+
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      formData.email === "abdelmonemramadan9@gmail.com" &&
-      formData.password === "admin123"
-    ) {
-      dispatch(login(formData));
-      navigate("/admin");
-      console.log("succeed"); // Redirect to Admin Dashboard
-    } else {
-      alert("Invalid credentials!");
+    const result = await dispatch(login(formData)); // Dispatch login action
+    console.log(result);
+    console.log(result.meta.requestStatus);
+    if (result.meta.requestStatus === "fulfilled") {
+      navigate("/admin"); // Navigate to admin dashboard on success
     }
   };
 
@@ -32,6 +30,7 @@ export default function Login() {
         <h2 className="text-2xl font-bold text-center text-[#0e2c6c] mb-6">
           Admin Login
         </h2>
+        {error && <p className="text-red-500 text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-gray-700">Email</label>

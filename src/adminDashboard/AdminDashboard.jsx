@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   fetchProducts,
   addProduct,
@@ -16,17 +16,20 @@ export default function AdminDashboard() {
   const admin = useSelector((state) => state.auth.admin);
 
   const [form, setForm] = useState({
-    id: "",
     title: "",
+    description: "", // ✅ Add this field
     image: "",
     category: "",
     price: "",
     gender: "",
   });
+
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
+  // Redirect if not logged in
   useEffect(() => {
     if (!admin) {
       navigate("/login");
@@ -36,18 +39,22 @@ export default function AdminDashboard() {
   }, [dispatch, admin, navigate]);
 
   const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm((prevForm) => ({ ...prevForm, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
     setError("");
+    setSuccess("");
 
     try {
       if (editing) {
-        await dispatch(editProduct(form));
+        await dispatch(editProduct(form)).unwrap();
+        setSuccess("Product updated successfully!");
       } else {
-        await dispatch(addProduct(form));
+        await dispatch(addProduct(form)).unwrap();
+        setSuccess("Product added successfully!");
       }
       setForm({
         id: "",
@@ -59,18 +66,31 @@ export default function AdminDashboard() {
       });
       setEditing(false);
     } catch (err) {
-      setError("Failed to save the product. Please try again.");
+      setError(err || "Failed to save the product. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleEdit = (product) => {
-    setForm(product);
+    setForm({
+      id: product._id || product.id, // Ensure we use the correct ID key
+      title: product.title,
+      description: product.description,
+      image: product.image,
+      category: product.category,
+      price: product.price,
+      gender: product.gender,
+    });
     setEditing(true);
   };
 
   const handleDelete = (id) => {
+    if (!id) {
+      console.error("❌ Missing product ID for deletion!");
+      return;
+    }
+
     if (window.confirm("Are you sure you want to delete this product?")) {
       dispatch(deleteProduct(id));
     }
@@ -92,6 +112,9 @@ export default function AdminDashboard() {
           Logout
         </button>
       </div>
+
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      {success && <p className="text-green-500 text-center mb-4">{success}</p>}
 
       <form
         onSubmit={handleSubmit}
@@ -133,6 +156,14 @@ export default function AdminDashboard() {
           className="border p-2 w-full mb-2"
           required
         />
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={form.description}
+          onChange={handleChange}
+          className="border p-2 w-full mb-2"
+          required
+        />
         <select
           name="gender"
           value={form.gender}
@@ -147,11 +178,13 @@ export default function AdminDashboard() {
         </select>
         <button
           type="submit"
-          className="bg-[#ff8808] text-white px-4 py-2 rounded-lg hover:bg-[#e67606]"
+          className={`bg-[#ff8808] text-white px-4 py-2 rounded-lg hover:bg-[#e67606] ${
+            loading && "opacity-50 cursor-not-allowed"
+          }`}
+          disabled={loading}
         >
           {loading ? "Saving..." : editing ? "Update Product" : "Add Product"}
         </button>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
       </form>
 
       <table className="w-full bg-white shadow-md rounded-lg">
@@ -172,7 +205,9 @@ export default function AdminDashboard() {
           ) : (
             products.map((product) => (
               <tr key={product.id} className="border-t">
-                <td className="p-2">{product.title}</td>
+                <td className="p-2">
+                  <Link to={`/product/${product._id}`}>{product.title}</Link>
+                </td>
                 <td className="p-2">${product.price}</td>
                 <td className="p-2 flex gap-2">
                   <button
@@ -182,7 +217,7 @@ export default function AdminDashboard() {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(product.id)}
+                    onClick={() => handleDelete(product._id)}
                     className="bg-red-500 text-white px-2 py-1 rounded-md"
                   >
                     Delete
