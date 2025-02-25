@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
+import { Link } from "react-router-dom";
 
 export default function Mix() {
   const dispatch = useDispatch();
@@ -33,11 +34,13 @@ export default function Mix() {
           >
             {/* Product Image */}
             <div className="w-full h-40 sm:h-48 overflow-hidden rounded-lg">
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-full object-cover"
-              />
+              <Link to={`/product/${product._id}`}>
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-full object-cover"
+                />
+              </Link>
             </div>
 
             {/* Product Info */}

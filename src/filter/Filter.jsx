@@ -19,8 +19,7 @@ export default function Filter({ category }) {
 
   // Filter products by selected category
   const filteredProducts = products.filter(
-    (product) =>
-      product.category >= category && product.category <= category + 2
+    (product) => product.category == category
   );
 
   // Sorting logic

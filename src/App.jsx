@@ -21,6 +21,8 @@ import AdminDashboard from "./adminDashboard/AdminDashboard";
 import ProductForm from "./adminDashboard/ProductForm";
 import Contact from "./contact/Contact";
 import AgeProducts from "./ageProduct/AgeProducts";
+import BundlesOffer from "./bundles-offer/BundlesOffer";
+import HomeProducts from "./Home-products/HomeProducts";
 
 function App() {
   const [category, setCategory] = useState("");
@@ -49,6 +51,8 @@ function App() {
             <div>
               <Header />
               <OurProducts category={category} setCategory={setCategory} />
+              <BundlesOffer />
+              <HomeProducts />
               <Info />
               <Footer />
             </div>

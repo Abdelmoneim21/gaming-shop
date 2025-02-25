@@ -25,7 +25,7 @@ function AgeProducts() {
               key={product.id}
               className="bg-white border border-gray-200 shadow-lg rounded-xl p-4 hover:shadow-xl transition"
             >
-              <Link to={`/product/${product.id}`}>
+              <Link to={`/product/${product._id}`}>
                 <img
                   src={product.image}
                   alt={product.title}

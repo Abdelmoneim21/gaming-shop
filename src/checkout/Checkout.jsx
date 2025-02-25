@@ -37,7 +37,7 @@ export default function Checkout() {
   };
 
   const sendWhatsAppMessage = () => {
-    const adminPhoneNumber = "+201099161140"; // Admin's WhatsApp number
+    const adminPhoneNumber = "+201027396409"; // Admin's WhatsApp number
 
     const cartDetails = cartItems
       .map(
