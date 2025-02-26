@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function OurProducts({ setCategory }) {
   return (
-    <div className="our-products my-16 px-4">
+    <div className="our-products my-16 px-4 ">
       {/* Heading Section */}
       <div className="top mb-10 text-center">
         <h1 className="text-red-500 text-xl font-semibold">Our Products</h1>
@@ -12,7 +12,7 @@ function OurProducts({ setCategory }) {
       </div>
 
       {/* Categories Grid */}
-      <div className="categories grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-[90%] mx-auto">
+      <div className="categories grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6 w-[90%] mx-auto">
         {/* Category: +3 */}
         <Link to="/filter" onClick={() => setCategory("+3")}>
           <div className="category hover:scale-105 transition-all duration-300 shadow-md rounded-xl overflow-hidden">

@@ -20,7 +20,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="p-4 sm:p-6 max-w-4xl mx-auto">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto mt-[150px]">
       <h1 className="text-2xl sm:text-3xl font-bold text-center text-blue-700">
         🛍️ Shopping Cart
       </h1>

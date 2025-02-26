@@ -55,7 +55,7 @@ export default function ProductDetails() {
     );
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center mt-[100px] min-h-screen bg-gray-100">
       <div className="bg-white rounded-3xl shadow-lg  p-6">
         {/* Product Image */}
         <div className="rounded-xl overflow-hidden">

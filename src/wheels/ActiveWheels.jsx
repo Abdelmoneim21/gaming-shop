@@ -4,24 +4,22 @@ import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
 import { Link } from "react-router-dom";
 
-export default function AllProducts() {
+export default function Wheels() {
   const dispatch = useDispatch();
   const { products, status, error } = useSelector((state) => state.products);
   const [quantities, setQuantities] = useState({});
   const [sortType, setSortType] = useState("az");
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    if (status === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
 
-  const handleQuantityChange = (id, value) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: value > 0 ? value : 1,
-    }));
-  };
+  const wheelsToys = products.filter((toy) => toy.category === "wheels");
 
-  const sortedProducts = [...products].sort((a, b) => {
+  // Sorting logic
+  const sortedToys = [...wheelsToys].sort((a, b) => {
     switch (sortType) {
       case "az":
         return a.title.localeCompare(b.title);
@@ -36,15 +34,22 @@ export default function AllProducts() {
     }
   });
 
+  const handleQuantityChange = (id, value) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [id]: value > 0 ? value : 1,
+    }));
+  };
+
   return (
-    <div className="container mx-auto p-6 mt-[150px]">
-      <h1 className="text-3xl font-bold text-center text-purple-700 mb-6">
-        Products
-      </h1>
+    <div className="p-6 mt-[200px]">
+      <h2 className="text-3xl font-bold text-blue-700 mb-4 text-center">
+        🚗 Active wheels
+      </h2>
 
       {/* Error Handling */}
       {status === "failed" && (
-        <p className="text-red-600 font-bold text-center">{error}</p>
+        <p className="text-red-500 text-center font-bold">{error}</p>
       )}
 
       {/* Loading Indicator */}
@@ -69,44 +74,41 @@ export default function AllProducts() {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {sortedProducts.map((product) => (
-          <div
-            key={product._id} // Ensure _id is used correctly
-            className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-4 flex flex-col items-center text-center min-h-[400px]"
-          >
-            {/* Clickable Product Image */}
-            <Link
-              to={`/product/${product._id}`}
-              className="w-full h-40 overflow-hidden rounded-lg"
+        {sortedToys.length > 0 ? (
+          sortedToys.map((toy) => (
+            <div
+              key={toy._id} // Use _id from API
+              className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center h-full"
             >
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-            </Link>
+              {/* Clickable Image */}
+              <Link
+                to={`/product/${toy._id}`}
+                className="w-full h-40 overflow-hidden rounded-lg"
+              >
+                <img
+                  src={toy.image}
+                  alt={toy.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </Link>
 
-            {/* Product Title */}
-            <Link to={`/product/${product._id}`}>
-              <h3 className="text-lg font-semibold mt-2 hover:text-blue-600">
-                {product.title}
-              </h3>
-            </Link>
+              {/* Clickable Title */}
+              <Link to={`/product/${toy._id}`}>
+                <h3 className="text-lg font-semibold mt-2 text-center hover:text-blue-600">
+                  {toy.title}
+                </h3>
+              </Link>
 
-            <p className="text-gray-700 font-bold text-lg mt-1">
-              LE {product.price} EGP
-            </p>
+              <p className="text-gray-700 font-bold">LE {toy.price} EGP</p>
 
-            {/* Quantity and Add to Cart Section */}
-            <div className="flex flex-col items-center justify-between w-full mt-auto">
               {/* Quantity Controls */}
-              <div className="flex items-center space-x-2 mb-2">
+              <div className="flex items-center space-x-2 mt-2">
                 <button
                   className="px-3 py-1 bg-red-400 text-white rounded-lg"
                   onClick={() =>
                     handleQuantityChange(
-                      product._id,
-                      (quantities[product._id] || 1) - 1
+                      toy._id,
+                      (quantities[toy._id] || 1) - 1
                     )
                   }
                 >
@@ -115,9 +117,9 @@ export default function AllProducts() {
                 <input
                   type="number"
                   min="1"
-                  value={quantities[product._id] || 1}
+                  value={quantities[toy._id] || 1}
                   onChange={(e) =>
-                    handleQuantityChange(product._id, parseInt(e.target.value))
+                    handleQuantityChange(toy._id, parseInt(e.target.value))
                   }
                   className="w-12 text-center border border-gray-300 rounded-lg"
                 />
@@ -125,8 +127,8 @@ export default function AllProducts() {
                   className="px-3 py-1 bg-green-400 text-white rounded-lg"
                   onClick={() =>
                     handleQuantityChange(
-                      product._id,
-                      (quantities[product._id] || 1) + 1
+                      toy._id,
+                      (quantities[toy._id] || 1) + 1
                     )
                   }
                 >
@@ -134,25 +136,31 @@ export default function AllProducts() {
                 </button>
               </div>
 
+              {/* Push button to the bottom */}
+              <div className="flex-grow"></div>
+
               {/* Add to Cart Button */}
               <button
-                className="bg-yellow-400 hover:bg-yellow-500 text-black items-center px-4 py-2 rounded-lg flex items-center space-x-2 font-medium w-full"
                 onClick={() =>
                   dispatch(
                     addToCart({
-                      ...product,
-                      id: product._id, // Ensure correct ID structure
-                      quantity: quantities[product._id] || 1,
+                      ...toy,
+                      id: toy._id, // Ensure correct ID usage
+                      quantity: quantities[toy._id] || 1,
                     })
                   )
                 }
+                className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center w-full"
               >
-                <span>🛒</span>
-                <span>Add to Cart</span>
+                <span className="text-center w-full">🛒 Add to Cart</span>
               </button>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-gray-500 text-center">
+            No toys available for boys.
+          </p>
+        )}
       </div>
     </div>
   );

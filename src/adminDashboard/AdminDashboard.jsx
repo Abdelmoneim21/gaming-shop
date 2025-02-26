@@ -22,6 +22,7 @@ export default function AdminDashboard() {
     category: "",
     price: "",
     gender: "",
+    age: "",
   });
 
   const [editing, setEditing] = useState(false);
@@ -63,6 +64,7 @@ export default function AdminDashboard() {
         category: "",
         price: "",
         gender: "",
+        age: "",
       });
       setEditing(false);
     } catch (err) {
@@ -74,17 +76,17 @@ export default function AdminDashboard() {
 
   const handleEdit = (product) => {
     setForm({
-      id: product._id || product.id, // Ensure we use the correct ID key
+      id: product._id || product.id,
       title: product.title,
       description: product.description,
       image: product.image,
       category: product.category,
       price: product.price,
       gender: product.gender,
+      age: product.age, // ✅ Ensure age is included
     });
     setEditing(true);
   };
-
   const handleDelete = (id) => {
     if (!id) {
       console.error("❌ Missing product ID for deletion!");
@@ -102,7 +104,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 mt-[150px]">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold text-[#0e2c6c]">Admin Dashboard</h1>
         <button
@@ -148,6 +150,15 @@ export default function AdminDashboard() {
           required
         />
         <input
+          type="text"
+          name="age"
+          placeholder="age"
+          value={form.age}
+          onChange={handleChange}
+          className="border p-2 w-full mb-2"
+          required
+        />
+        <input
           type="number"
           name="price"
           placeholder="Price"
@@ -174,7 +185,6 @@ export default function AdminDashboard() {
           <option value="">Select Gender</option>
           <option value="boys">Boys</option>
           <option value="girls">Girls</option>
-          <option value="unisex">Unisex</option>
         </select>
         <button
           type="submit"
@@ -204,7 +214,7 @@ export default function AdminDashboard() {
             </tr>
           ) : (
             products.map((product) => (
-              <tr key={product.id} className="border-t">
+              <tr key={product._id} className="border-t">
                 <td className="p-2">
                   <Link to={`/product/${product._id}`}>{product.title}</Link>
                 </td>

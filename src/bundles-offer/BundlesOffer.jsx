@@ -12,7 +12,7 @@ export default function BundlesOffer() {
   }, [dispatch]);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mt-[150px]">
       {/* Section Title */}
       <h2 className="text-lg text-center text-yellow-500 font-semibold">
         Our Products
@@ -22,14 +22,14 @@ export default function BundlesOffer() {
       </h1>
 
       {/* Product List */}
-      <div className="flex flex-col gap-4 sm:gap-6 md:gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
         {products.map((product) => (
           <div
             key={product._id}
-            className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-4 flex flex-row items-center gap-4"
+            className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-4 flex flex-col items-center"
           >
             {/* Product Image */}
-            <div className="relative w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0">
+            <div className="relative w-full h-32 sm:h-40 flex-shrink-0">
               {product.soldOut && (
                 <span className="absolute top-2 left-2 bg-gray-700 text-white text-xs px-2 py-1 rounded">
                   Sold out
@@ -50,7 +50,7 @@ export default function BundlesOffer() {
             </div>
 
             {/* Product Details */}
-            <div className="flex flex-col justify-center">
+            <div className="text-center mt-2">
               <Link to={`/product/${product._id}`}>
                 <h3 className="text-lg font-semibold hover:text-purple-600">
                   {product.title}
@@ -60,10 +60,10 @@ export default function BundlesOffer() {
               {/* Product Pricing */}
               <p className="text-gray-600 text-lg mt-1">
                 <span className="line-through text-gray-500 mr-2">
-                  LE {product.originalPrice}.00 EGP
+                  LE {Math.round(product.price * 1.4)} EGP
                 </span>
                 <span className="text-red-600 font-bold">
-                  LE {product.price}.00 EGP
+                  LE {product.price} EGP
                 </span>
               </p>
             </div>

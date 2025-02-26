@@ -18,11 +18,15 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScroll, setLastScroll] = useState(0);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownAgeOpen, setDropdownAgeOpen] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // Redux state
-  const cartCount = useSelector((state) => state.cart.items);
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartCount = cartItems; // Number of items in cart
   const admin = useSelector((state) => state.auth.admin);
 
   // Handle Scroll Behavior
@@ -88,6 +92,7 @@ export default function Navbar() {
               </Link>
             )}
             <div className="border-r-2 h-6"></div>
+            {/* Cart Icon (Visible on Desktop) */}
             <Link to="/cart" className="relative">
               <FaShoppingCart size={24} color="#0e2c6c" />
               {cartCount > 0 && (
@@ -99,38 +104,52 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-[#0e2c6c]"
-          onClick={() => setMenuOpen(true)}
-        >
-          <FaBars size={24} />
-        </button>
+        {/* Mobile View: Menu & Cart Icon */}
+        <div className="flex items-center md:hidden gap-4">
+          {/* Cart Icon (Visible on Mobile) */}
+          <Link to="/cart" className="relative">
+            <FaShoppingCart size={24} color="#0e2c6c" />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-3 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+          {/* Mobile Menu Button */}
+          <button className="text-[#0e2c6c]" onClick={() => setMenuOpen(true)}>
+            <FaBars size={24} />
+          </button>
+        </div>
       </div>
 
       {/* Mobile Sidebar Menu */}
       {menuOpen && (
         <div
-          className=" top-0 inset-0 bg-black bg-opacity-50 z-50"
+          className="top-0 inset-0 bg-black bg-opacity-50 z-50"
           onClick={() => setMenuOpen(false)}
         ></div>
       )}
 
       <div
-        className={`fixed left-0 top-0 h-[100vh] w-3/4 bg-[#ccc] shadow-lg z-50  transition-transform ${
+        className={`fixed left-0 top-0 h-[100vh] w-3/4 bg-[#ccc] shadow-lg z-50 transition-transform ${
           menuOpen ? "translate-x-0 " : "-translate-x-full"
         } p-6`}
       >
         {/* Close Button */}
         <button
-          className="p-4 bg-[#ccc] inset-0  bg-opacity-50 z-[999]"
+          className="p-4 bg-[#ccc] inset-0 bg-opacity-50 z-[999]"
           onClick={() => setMenuOpen(false)}
         >
           <FaTimes />
         </button>
 
         {/* Menu Items */}
-        <ul className="flex flex-col gap-6 mt-8 text-purple-700 font-semibold text-lg ">
+        <ul
+          className="flex flex-col gap-6 mt-8 text-purple-700 font-semibold text-lg"
+          onMouseLeave={() => {
+            setDropdownOpen(false), setDropdownAgeOpen(false);
+          }}
+        >
           <li>
             <Link to="/" className="flex items-center gap-3">
               <GiCardboardBox size={20} />
@@ -138,27 +157,77 @@ export default function Navbar() {
             </Link>
           </li>
 
+          <li
+            className="relative flex items-center gap-3 cursor-pointer"
+            onMouseEnter={() => setDropdownOpen(true)}
+            onMouseLeave={() => setDropdownOpen(false)}
+          >
+            <MdCategory size={20} />
+            Categories
+            <span className="text-gray-400">{">"}</span>
+            {dropdownOpen && (
+              <ul className="absolute left-0 z-10 top-full bg-white shadow-lg rounded-lg mt-2 p-2 w-48">
+                <li>
+                  <Link to="/wheels" className="block p-2 hover:bg-gray-100">
+                    Active wheels
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/smart" className="block p-2 hover:bg-gray-100">
+                    Smart play
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/boys" className="block p-2 hover:bg-gray-100">
+                    For boys
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/girls" className="block p-2 hover:bg-gray-100">
+                    For Girls
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/mix" className="block p-2 hover:bg-gray-100">
+                    Mix
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
           <li>
             <Link to="/products" className="flex items-center gap-3">
               <BsBoxSeam size={20} />
               All Products
             </Link>
           </li>
-
-          <li className="flex items-center justify-between">
-            <Link to="/categories" className="flex items-center gap-3">
-              <MdCategory size={20} />
-              Categories
-            </Link>
+          <li
+            className="relative flex items-center gap-3 cursor-pointer"
+            onMouseEnter={() => setDropdownAgeOpen(true)}
+            onMouseLeave={() => setDropdownAgeOpen(false)}
+          >
+            <MdCategory size={20} />
+            Shop by Age
             <span className="text-gray-400">{">"}</span>
-          </li>
-
-          <li className="flex items-center justify-between">
-            <Link to="/bundles" className="flex items-center gap-3">
-              <BsBoxSeam size={20} />
-              Bundles
-            </Link>
-            <span className="text-gray-400">{">"}</span>
+            {dropdownAgeOpen && (
+              <ul className="absolute left-0 top-full bg-white shadow-lg rounded-lg mt-2 p-2 w-48">
+                <li>
+                  <Link to="/age/0-1" className="block p-2 hover:bg-gray-100">
+                    0-1 Years
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/age/1-3" className="block p-2 hover:bg-gray-100">
+                    1-3 Years
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/age/+3" className="block p-2 hover:bg-gray-100">
+                    +3 Years
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
 
           <li>
@@ -167,36 +236,12 @@ export default function Navbar() {
               Contact
             </Link>
           </li>
-
-          {admin ? (
-            <>
-              <li>
-                <Link
-                  to="/admin/dashboard"
-                  className="flex items-center gap-3 text-green-600"
-                >
-                  <MdCategory size={20} />
-                  Admin Dashboard
-                </Link>
-              </li>
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-3 text-red-600"
-                >
-                  <FaSignOutAlt size={20} />
-                  Logout
-                </button>
-              </li>
-            </>
-          ) : (
-            <li>
-              <Link to="/login" className="flex items-center gap-3">
-                <FaUser size={20} />
-                Log in
-              </Link>
-            </li>
-          )}
+          <li>
+            <Link to="/login" className="flex items-center gap-3">
+              <IoCall size={20} />
+              Login
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>

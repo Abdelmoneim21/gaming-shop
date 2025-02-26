@@ -8,12 +8,10 @@ function AgeProducts() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
 
-  const filteredProducts = products.filter(
-    (product) => product.category === age
-  );
+  const filteredProducts = products.filter((product) => product.age === age);
 
   return (
-    <div className="w-[90%] mx-auto mt-6">
+    <div className="w-[90%] mx-auto mt-[150px]">
       <h1 className="text-2xl font-bold text-[#0e2c6c] mb-6 text-center">
         Toys for Age {age} Years
       </h1>
@@ -22,7 +20,7 @@ function AgeProducts() {
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
             <div
-              key={product.id}
+              key={product._id}
               className="bg-white border border-gray-200 shadow-lg rounded-xl p-4 hover:shadow-xl transition"
             >
               <Link to={`/product/${product._id}`}>

@@ -23,6 +23,10 @@ import Contact from "./contact/Contact";
 import AgeProducts from "./ageProduct/AgeProducts";
 import BundlesOffer from "./bundles-offer/BundlesOffer";
 import HomeProducts from "./Home-products/HomeProducts";
+import Wheels from "./wheels/ActiveWheels";
+import MovingText from "./moving-banner/MovingText";
+import { MovingImage } from "./moving-banner/MovingImages";
+import Smart from "./smart-play/Smart";
 
 function App() {
   const [category, setCategory] = useState("");
@@ -50,7 +54,9 @@ function App() {
           element={
             <div>
               <Header />
+              <MovingText />
               <OurProducts category={category} setCategory={setCategory} />
+              <MovingImage />
               <BundlesOffer />
               <HomeProducts />
               <Info />
@@ -67,6 +73,9 @@ function App() {
         <Route path="/boys" element={<BoysToys />} />
         <Route path="/girls" element={<GirlsToys />} />
         <Route path="/mix" element={<Mix />} />
+        <Route path="/bundles" element={<BundlesOffer />} />
+        <Route path="/wheels" element={<Wheels />} />
+        <Route path="/smart" element={<Smart />} />
         <Route path="/age/:age" element={<AgeProducts />} />
 
         {/* Protected Admin Routes */}

@@ -33,7 +33,7 @@ function Header() {
   const ageGroups = [...new Set(products.map((p) => p.category))];
 
   return (
-    <div className="w-[90%] mx-auto mt-6 flex flex-col md:flex-row gap-4 relative">
+    <div className="w-[90%] mx-auto mt-6 flex lg:mt-[250px] md:mt-[150px] mt-[150px] flex-col md:flex-row gap-4 relative">
       {/* Sidebar */}
       <div className="md:w-[28%] w-full rounded-lg shadow-lg border border-gray-200">
         {/* Sidebar Header */}
@@ -169,7 +169,7 @@ function Header() {
 
         {/* Banner Image */}
         <img
-          src="/salla-updated.jpg"
+          src="/1000_F_396099929_pq25fniLGVfqrxJVhLqJvNPdNwO85kll.jpg"
           alt="content-image"
           className="rounded-xl w-full"
         />

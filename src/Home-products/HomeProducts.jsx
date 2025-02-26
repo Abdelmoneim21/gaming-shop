@@ -26,7 +26,7 @@ export default function HomeProducts() {
       </h1>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-2 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 w-[90%] m-auto gap-4 sm:gap-6">
         {displayedProducts.map((product) => (
           <div key={product._id} className="text-center">
             <div className="relative">
