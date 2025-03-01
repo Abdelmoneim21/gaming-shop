@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // ✅ Corrected import
+import Swal from "sweetalert2";
 
 export default function GirlsToys() {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // ✅ Use useNavigate hook
   const { products, status, error } = useSelector((state) => state.products);
   const [quantities, setQuantities] = useState({});
   const [sortType, setSortType] = useState("az");
@@ -33,6 +35,26 @@ export default function GirlsToys() {
         return 0;
     }
   });
+
+  const handleAddToCart = (toy) => {
+    const quantity = quantities[toy._id] || 1;
+    dispatch(addToCart({ ...toy, id: toy._id, quantity }));
+
+    // SweetAlert Confirmation
+    Swal.fire({
+      title: "Added to Cart! 🛒",
+      text: `${toy.title} (${quantity} pcs) added to your cart.`,
+      icon: "success",
+      showCancelButton: true,
+      confirmButtonText: "Go to Cart",
+      cancelButtonText: "Continue Shopping",
+      confirmButtonColor: "#0e2c6c",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/cart"); // ✅ Navigate correctly
+      }
+    });
+  };
 
   const handleQuantityChange = (id, value) => {
     setQuantities((prev) => ({
@@ -141,15 +163,7 @@ export default function GirlsToys() {
 
               {/* Add to Cart Button */}
               <button
-                onClick={() =>
-                  dispatch(
-                    addToCart({
-                      ...toy,
-                      id: toy._id, // Ensure correct ID usage
-                      quantity: quantities[toy._id] || 1,
-                    })
-                  )
-                }
+                onClick={() => handleAddToCart(toy)}
                 className="mt-3 bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center w-full"
               >
                 <span className="text-center w-full">🛒 Add to Cart</span>

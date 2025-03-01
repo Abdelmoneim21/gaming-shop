@@ -72,7 +72,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <IoCall size={24} color="#0e2c6c" />
             <h2 className="text-lg text-[#0e2c6c] font-semibold">
-              +201068258565
+              +201002726498
             </h2>
           </div>
 
@@ -202,7 +202,7 @@ export default function Navbar() {
             </Link>
           </li>
           <li
-            className="relative flex items-center gap-3 cursor-pointer"
+            className="relative flex items-center gap-3 cursor-pointer "
             onMouseEnter={() => setDropdownAgeOpen(true)}
             onMouseLeave={() => setDropdownAgeOpen(false)}
           >

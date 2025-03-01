@@ -4,7 +4,7 @@ import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
 import { Link } from "react-router-dom";
 
-export default function Filter({ category }) {
+export default function Filter({ age }) {
   const dispatch = useDispatch();
   const { products, status } = useSelector((state) => state.products);
   const [quantities, setQuantities] = useState({});
@@ -18,9 +18,7 @@ export default function Filter({ category }) {
   }, [dispatch, status]);
 
   // Filter products by selected category
-  const filteredProducts = products.filter(
-    (product) => product.category == category
-  );
+  const filteredProducts = products.filter((product) => product.age == age);
 
   // Sorting logic
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -42,7 +40,7 @@ export default function Filter({ category }) {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold text-center text-[#0e2c6c] mb-6">
-        Products in Category: <span className="text-[#ff8808]">{category}</span>
+        Products in Category: <span className="text-[#ff8808]">{age}</span>
       </h1>
 
       {/* Sorting Dropdown */}

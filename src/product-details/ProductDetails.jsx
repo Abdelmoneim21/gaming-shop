@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { addToCart } from "../rtk/slices/cartSlice"; // ✅ Import Redux action
 import { FaShoppingCart } from "react-icons/fa"; // ✅ Shopping Cart Icon
+import Swal from "sweetalert2"; // ✅ Import SweetAlert
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -15,6 +16,13 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     dispatch(addToCart({ ...product, quantity }));
+    Swal.fire({
+      icon: "success",
+      title: "Added to Cart!",
+      text: `${product.title} has been added to your cart.`,
+      timer: 1500,
+      showConfirmButton: false,
+    });
   };
 
   useEffect(() => {

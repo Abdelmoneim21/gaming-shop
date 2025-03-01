@@ -1,14 +1,32 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../rtk/slices/cartSlice";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function AgeProducts() {
   const { age } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const products = useSelector((state) => state.products.products);
 
   const filteredProducts = products.filter((product) => product.age === age);
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+
+    Swal.fire({
+      title: "Added to Cart!",
+      text: `${product.title} has been added to your cart.`,
+      icon: "success",
+      confirmButtonText: "Go to Cart",
+      confirmButtonColor: "#0e2c6c",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/cart");
+      }
+    });
+  };
 
   return (
     <div className="w-[90%] mx-auto mt-[150px]">
@@ -40,7 +58,7 @@ function AgeProducts() {
 
               <div className="flex justify-center mt-3">
                 <button
-                  onClick={() => dispatch(addToCart(product))}
+                  onClick={() => handleAddToCart(product)}
                   className="w-full px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition flex items-center justify-center gap-2"
                 >
                   🛒 Add to Cart

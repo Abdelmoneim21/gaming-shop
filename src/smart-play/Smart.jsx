@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Smart() {
   const dispatch = useDispatch();
@@ -39,6 +40,22 @@ export default function Smart() {
       ...prev,
       [id]: value > 0 ? value : 1,
     }));
+  };
+
+  const handleAddToCart = (toy) => {
+    dispatch(
+      addToCart({
+        ...toy,
+        id: toy._id,
+        quantity: quantities[toy._id] || 1,
+      })
+    );
+    Swal.fire({
+      title: "Added to Cart!",
+      text: `${toy.title} has been added to your cart.`,
+      icon: "success",
+      confirmButtonText: "OK",
+    });
   };
 
   return (
@@ -141,15 +158,7 @@ export default function Smart() {
 
               {/* Add to Cart Button */}
               <button
-                onClick={() =>
-                  dispatch(
-                    addToCart({
-                      ...toy,
-                      id: toy._id, // Ensure correct ID usage
-                      quantity: quantities[toy._id] || 1,
-                    })
-                  )
-                }
+                onClick={() => handleAddToCart(toy)}
                 className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center w-full"
               >
                 <span className="text-center w-full">🛒 Add to Cart</span>

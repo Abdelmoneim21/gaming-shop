@@ -14,7 +14,7 @@ function OurProducts({ setCategory }) {
       {/* Categories Grid */}
       <div className="categories grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6 w-[90%] mx-auto">
         {/* Category: +3 */}
-        <Link to="/filter" onClick={() => setCategory("+3")}>
+        <Link to="/age/+3" onClick={() => setCategory("+3")}>
           <div className="category hover:scale-105 transition-all duration-300 shadow-md rounded-xl overflow-hidden">
             <img src="/3_copy.webp" alt="3+" className="w-full" />
             <div className="txt text-center py-3 bg-[#f6f7fa]">
@@ -25,7 +25,7 @@ function OurProducts({ setCategory }) {
         </Link>
 
         {/* Category: 0-1 */}
-        <Link to="/filter" onClick={() => setCategory("0-1")}>
+        <Link to="/age/0-1" onClick={() => setCategory("0-1")}>
           <div className="category hover:scale-105 transition-all duration-300 shadow-md rounded-xl overflow-hidden">
             <img src="/0-1_copy.webp" alt="0-1" className="w-full" />
             <div className="txt text-center py-3 bg-[#f6f7fa]">
@@ -36,7 +36,7 @@ function OurProducts({ setCategory }) {
         </Link>
 
         {/* Category: 1-3 */}
-        <Link to="/filter" onClick={() => setCategory("1-3")}>
+        <Link to="/age/1-3" onClick={() => setCategory("1-3")}>
           <div className="category hover:scale-105 transition-all duration-300 shadow-md rounded-xl overflow-hidden">
             <img src="/2-3_copy.webp" alt="1-3" className="w-full" />
             <div className="txt text-center py-3 bg-[#f6f7fa]">

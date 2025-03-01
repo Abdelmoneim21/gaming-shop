@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function BoysToys() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { products, status, error } = useSelector((state) => state.products);
   const [quantities, setQuantities] = useState({});
   const [sortType, setSortType] = useState("az");
@@ -39,6 +41,24 @@ export default function BoysToys() {
       ...prev,
       [id]: value > 0 ? value : 1,
     }));
+  };
+
+  const handleAddToCart = (toy) => {
+    const quantity = quantities[toy._id] || 1;
+    dispatch(addToCart({ ...toy, id: toy._id, quantity }));
+
+    // SweetAlert Confirmation
+    Swal.fire({
+      title: "Added to Cart!",
+      text: `${toy.title} (${quantity} pcs) added to your cart.`,
+      icon: "success",
+      confirmButtonText: "Go to Cart",
+      confirmButtonColor: "#0e2c6c",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/cart"); // Redirect to the cart page
+      }
+    });
   };
 
   return (
@@ -77,7 +97,7 @@ export default function BoysToys() {
         {sortedToys.length > 0 ? (
           sortedToys.map((toy) => (
             <div
-              key={toy._id} // Use _id from API
+              key={toy._id}
               className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center h-full"
             >
               {/* Clickable Image */}
@@ -141,15 +161,7 @@ export default function BoysToys() {
 
               {/* Add to Cart Button */}
               <button
-                onClick={() =>
-                  dispatch(
-                    addToCart({
-                      ...toy,
-                      id: toy._id, // Ensure correct ID usage
-                      quantity: quantities[toy._id] || 1,
-                    })
-                  )
-                }
+                onClick={() => handleAddToCart(toy)}
                 className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center w-full"
               >
                 <span className="text-center w-full">🛒 Add to Cart</span>

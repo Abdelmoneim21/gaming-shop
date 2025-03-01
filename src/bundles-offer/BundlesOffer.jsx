@@ -1,15 +1,35 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
-import { Link } from "react-router-dom";
+import { addToCart } from "../rtk/slices/cartSlice";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function BundlesOffer() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const products = useSelector((state) => state.products.products);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart({ ...product, id: product._id, quantity: 1 }));
+
+    // SweetAlert Confirmation
+    Swal.fire({
+      title: "Added to Cart!",
+      text: `${product.title} has been added to your cart.`,
+      icon: "success",
+      confirmButtonText: "Go to Cart",
+      confirmButtonColor: "#0e2c6c",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/cart"); // Navigate to cart page
+      }
+    });
+  };
 
   return (
     <div className="container mx-auto p-4 mt-[150px]">
@@ -66,6 +86,16 @@ export default function BundlesOffer() {
                   LE {product.price} EGP
                 </span>
               </p>
+
+              {/* Add to Cart Button */}
+              {!product.soldOut && (
+                <button
+                  className="mt-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg w-full"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  🛒 Add to Cart
+                </button>
+              )}
             </div>
           </div>
         ))}

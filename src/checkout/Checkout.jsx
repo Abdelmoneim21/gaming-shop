@@ -37,7 +37,7 @@ export default function Checkout() {
   };
 
   const sendWhatsAppMessage = () => {
-    const adminPhoneNumber = "+201027396409"; // Admin's WhatsApp number
+    const adminPhoneNumber = "+201002726498"; // Admin's WhatsApp number
 
     const cartDetails = cartItems
       .map(
@@ -53,7 +53,7 @@ export default function Checkout() {
         ? `\n\n📍 *Address:*\n👤 *Full Name:* ${address.fullName}\n📞 *Phone:* ${address.phone}\n🏠 *Street:* ${address.streetAddress}`
         : "";
 
-    const message = `🛒 *New Order Received!*\n\n${cartDetails}\n\n💰 *Total Price:* $${totalPrice}\n🛍️ *Payment Method:* ${paymentMethod.toUpperCase()}${addressDetails}`;
+    const message = `🛒 *New Order Received!*\n\n${cartDetails}\n\n💰 *Total Price:* EGP${totalPrice}\n🛍️ *Payment Method:* ${paymentMethod.toUpperCase()}${addressDetails}`;
 
     const whatsappURL = `https://wa.me/${adminPhoneNumber}?text=${encodeURIComponent(
       message

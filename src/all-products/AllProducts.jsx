@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function AllProducts() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { products, status, error } = useSelector((state) => state.products);
   const [quantities, setQuantities] = useState({});
   const [sortType, setSortType] = useState("az");
@@ -19,6 +21,24 @@ export default function AllProducts() {
       ...prev,
       [id]: value > 0 ? value : 1,
     }));
+  };
+
+  const handleAddToCart = (product) => {
+    const quantity = quantities[product._id] || 1;
+    dispatch(addToCart({ ...product, id: product._id, quantity }));
+
+    // SweetAlert Confirmation
+    Swal.fire({
+      title: "Added to Cart!",
+      text: `${product.title} has been added to your cart.`,
+      icon: "success",
+      confirmButtonText: "Go to Cart",
+      confirmButtonColor: "#0e2c6c",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/cart"); // Navigate to cart page
+      }
+    });
   };
 
   const sortedProducts = [...products].sort((a, b) => {
@@ -137,15 +157,7 @@ export default function AllProducts() {
               {/* Add to Cart Button */}
               <button
                 className="bg-yellow-400 hover:bg-yellow-500 text-black items-center px-4 py-2 rounded-lg flex items-center space-x-2 font-medium w-full"
-                onClick={() =>
-                  dispatch(
-                    addToCart({
-                      ...product,
-                      id: product._id, // Ensure correct ID structure
-                      quantity: quantities[product._id] || 1,
-                    })
-                  )
-                }
+                onClick={() => handleAddToCart(product)}
               >
                 <span>🛒</span>
                 <span>Add to Cart</span>

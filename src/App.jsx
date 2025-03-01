@@ -29,7 +29,7 @@ import { MovingImage } from "./moving-banner/MovingImages";
 import Smart from "./smart-play/Smart";
 
 function App() {
-  const [category, setCategory] = useState("");
+  const [age, setAge] = useState("");
   const admin = useSelector((state) => state.auth.admin);
   const dispatch = useDispatch();
 
@@ -55,7 +55,7 @@ function App() {
             <div>
               <Header />
               <MovingText />
-              <OurProducts category={category} setCategory={setCategory} />
+              <OurProducts age={age} setAge={setAge} />
               <MovingImage />
               <BundlesOffer />
               <HomeProducts />
@@ -66,7 +66,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/products" element={<AllProducts />} />
-        <Route path="/filter" element={<Filter category={category} />} />
+        <Route path="/filter" element={<Filter age={age} />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />

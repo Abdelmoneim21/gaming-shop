@@ -22,7 +22,7 @@ export const fetchProducts = createAsyncThunk(
       if (!response.ok) throw new Error("Failed to fetch products");
 
       const json = await response.json();
-      console.log("✅ Fetch Products Response:", json);
+      // console.log("✅ Fetch Products Response:", json);
       return json.data;
     } catch (error) {
       console.error("❌ Error in fetchProducts:", error);
