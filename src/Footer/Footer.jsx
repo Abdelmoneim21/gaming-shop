@@ -7,7 +7,7 @@ function Footer() {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-center md:text-left">
         {/* Quick Links */}
         <div className="links">
-          <h1 className="text-2xl font-semibold text-[#ff8808] mb-4">
+          <h1 className="text-2xl font-semibold text-[#eab308] mb-4">
             QUICK LINKS
           </h1>
           <div className="flex flex-col items-center md:items-start space-y-2">
@@ -26,7 +26,7 @@ function Footer() {
 
         {/* Description */}
         <div className="description">
-          <h1 className="text-2xl font-semibold text-[#ff8808] mb-4">
+          <h1 className="text-2xl font-semibold text-[#eab308] mb-4">
             DESCRIPTION
           </h1>
           <p className="text-[#fff] leading-relaxed">
@@ -40,7 +40,7 @@ function Footer() {
 
         {/* Newsletter & Social Icons */}
         <div className="newsletter">
-          <h1 className="text-2xl font-semibold text-[#ff8808] mb-4">
+          <h1 className="text-2xl font-semibold text-[#eab308] mb-4">
             NEWSLETTER
           </h1>
           <p className="text-[#fff] mb-4">
@@ -54,12 +54,12 @@ function Footer() {
           />
           <p className="text-[#fff] text-sm mt-3">
             By clicking the button, you agree to our
-            <span className="text-[#ff8808] cursor-pointer">
+            <span className="text-[#eab308] cursor-pointer">
               {" "}
               Privacy Policy{" "}
             </span>
             and
-            <span className="text-[#ff8808] cursor-pointer">
+            <span className="text-[#eab308] cursor-pointer">
               {" "}
               Terms & Conditions
             </span>
@@ -67,7 +67,7 @@ function Footer() {
           </p>
 
           {/* Social Icons */}
-          <h1 className="mt-5 text-[#ff8808] font-semibold text-2xl mb-3">
+          <h1 className="mt-5 text-[#eab308] font-semibold text-2xl mb-3">
             FOLLOW US
           </h1>
           <div className="flex justify-center md:justify-start gap-6">

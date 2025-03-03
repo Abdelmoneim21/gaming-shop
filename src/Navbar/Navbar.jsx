@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { IoCall } from "react-icons/io5";
@@ -20,6 +20,7 @@ export default function Navbar() {
   const [lastScroll, setLastScroll] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownAgeOpen, setDropdownAgeOpen] = useState(false);
+  const menuRef = useRef(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,6 +29,29 @@ export default function Navbar() {
   const cartItems = useSelector((state) => state.cart.items);
   const cartCount = cartItems; // Number of items in cart
   const admin = useSelector((state) => state.auth.admin);
+
+  // Handle outside clicks to close menu
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        menuOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+
+    // Add event listener when menu is open
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // Clean up
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
 
   // Handle Scroll Behavior
   useEffect(() => {
@@ -122,22 +146,21 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Sidebar Menu */}
+      {/* Overlay for outside clicks */}
       {menuOpen && (
-        <div
-          className="top-0 inset-0 bg-black bg-opacity-50 z-50"
-          onClick={() => setMenuOpen(false)}
-        ></div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
       )}
 
+      {/* Mobile Sidebar Menu */}
       <div
+        ref={menuRef}
         className={`fixed left-0 top-0 h-[100vh] w-3/4 bg-[#ccc] shadow-lg z-50 transition-transform ${
           menuOpen ? "translate-x-0 " : "-translate-x-full"
         } p-6`}
       >
         {/* Close Button */}
         <button
-          className="p-4 bg-[#ccc] inset-0 bg-opacity-50 z-[999]"
+          className="p-4 text-gray-700"
           onClick={() => setMenuOpen(false)}
         >
           <FaTimes />
@@ -145,13 +168,14 @@ export default function Navbar() {
 
         {/* Menu Items */}
         <ul
-          className="flex flex-col gap-6 mt-8 text-purple-700 font-semibold text-lg"
+          className="flex flex-col gap-6 mt-8 text-[#0e2c6c] font-semibold text-lg"
           onMouseLeave={() => {
-            setDropdownOpen(false), setDropdownAgeOpen(false);
+            setDropdownOpen(false);
+            setDropdownAgeOpen(false);
           }}
         >
           <li>
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3 ">
               <GiCardboardBox size={20} />
               Home
             </Link>

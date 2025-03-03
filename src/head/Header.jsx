@@ -23,7 +23,7 @@ function Header() {
   );
 
   return (
-    <div className="w-[90%] mx-auto mt-[120px] flex flex-col gap-4 relative">
+    <div className="w-[90%] sm:mt-[200px] mx-auto mt-[120px] flex flex-col gap-4 relative">
       {/* Search & Image Section */}
       <div className="flex-1 relative">
         {/* Search Bar */}

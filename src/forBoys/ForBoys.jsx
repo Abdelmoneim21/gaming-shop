@@ -49,14 +49,16 @@ export default function BoysToys() {
 
     // SweetAlert Confirmation
     Swal.fire({
-      title: "Added to Cart!",
+      title: "Added to Cart! 🛒",
       text: `${toy.title} (${quantity} pcs) added to your cart.`,
       icon: "success",
+      showCancelButton: true,
       confirmButtonText: "Go to Cart",
+      cancelButtonText: "Continue Shopping",
       confirmButtonColor: "#0e2c6c",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/cart"); // Redirect to the cart page
+        navigate("/cart"); // ✅ Navigate correctly
       }
     });
   };

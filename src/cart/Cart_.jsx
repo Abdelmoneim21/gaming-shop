@@ -27,7 +27,7 @@ export default function Cart() {
 
       {cartItems.map((item) => (
         <div
-          key={item.id}
+          key={item._id}
           className="flex flex-wrap sm:flex-nowrap items-center justify-between bg-white p-4 rounded-lg shadow-md mt-4"
         >
           {/* Product Image */}
@@ -88,7 +88,7 @@ export default function Cart() {
 
       {/* Cart Footer */}
       <div className="text-right mt-6">
-        <h2 className="text-xl font-bold">Total: ${totalPrice.toFixed(2)}</h2>
+        <h2 className="text-xl font-bold">Total: LE{totalPrice.toFixed(2)}</h2>
         <button
           onClick={() => dispatch(clearCart())}
           className="bg-gray-800 text-white px-6 py-2 rounded-lg mt-4 hover:bg-gray-900 transition"

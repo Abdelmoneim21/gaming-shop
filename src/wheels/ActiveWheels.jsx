@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Wheels() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { products, status, error } = useSelector((state) => state.products);
   const [quantities, setQuantities] = useState({});
   const [sortType, setSortType] = useState("az");
@@ -39,6 +41,29 @@ export default function Wheels() {
       ...prev,
       [id]: value > 0 ? value : 1,
     }));
+  };
+
+  const handleAddToCart = (toy) => {
+    dispatch(
+      addToCart({
+        ...toy,
+        id: toy._id,
+        quantity: quantities[toy._id] || 1,
+      })
+    );
+    Swal.fire({
+      title: "Added to Cart! 🛒",
+      text: `${toy.title} has been added to your cart.`,
+      icon: "success",
+      showCancelButton: true,
+      confirmButtonText: "Go to Cart",
+      cancelButtonText: "Continue Shopping",
+      confirmButtonColor: "#0e2c6c",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/cart");
+      }
+    });
   };
 
   return (
@@ -77,7 +102,7 @@ export default function Wheels() {
         {sortedToys.length > 0 ? (
           sortedToys.map((toy) => (
             <div
-              key={toy._id} // Use _id from API
+              key={toy._id}
               className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center h-full"
             >
               {/* Clickable Image */}
@@ -141,15 +166,7 @@ export default function Wheels() {
 
               {/* Add to Cart Button */}
               <button
-                onClick={() =>
-                  dispatch(
-                    addToCart({
-                      ...toy,
-                      id: toy._id, // Ensure correct ID usage
-                      quantity: quantities[toy._id] || 1,
-                    })
-                  )
-                }
+                onClick={() => handleAddToCart(toy)}
                 className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center w-full"
               >
                 <span className="text-center w-full">🛒 Add to Cart</span>
@@ -158,7 +175,7 @@ export default function Wheels() {
           ))
         ) : (
           <p className="text-gray-500 text-center">
-            No toys available for boys.
+            No toys available for wheels.
           </p>
         )}
       </div>

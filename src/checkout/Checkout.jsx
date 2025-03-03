@@ -89,7 +89,7 @@ export default function Checkout() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+    <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-[100px]">
       <h2 className="text-2xl font-bold text-center mb-6">Checkout</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">

@@ -1,105 +1,101 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { FaShoppingCart, FaEye, FaRegHeart } from "react-icons/fa";
 
 export default function BundlesOffer() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.products.products);
+  const [hoveredProduct, setHoveredProduct] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(4);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (product, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     dispatch(addToCart({ ...product, id: product._id, quantity: 1 }));
 
-    // SweetAlert Confirmation
     Swal.fire({
-      title: "Added to Cart!",
-      text: `${product.title} has been added to your cart.`,
+      title: "Added to Cart! 🛒",
+      text: `${product.title} added to your cart.`,
       icon: "success",
+      showCancelButton: true,
       confirmButtonText: "Go to Cart",
+      cancelButtonText: "Continue Shopping",
       confirmButtonColor: "#0e2c6c",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/cart"); // Navigate to cart page
+        navigate("/cart");
       }
     });
   };
 
-  return (
-    <div className="container mx-auto p-4 mt-[150px]">
-      {/* Section Title */}
-      <h2 className="text-lg text-center text-yellow-500 font-semibold">
-        Our Products
-      </h2>
-      <h1 className="text-3xl font-bold text-center text-purple-700 mb-6">
-        Bundles Offer
-      </h1>
+  const showMoreProducts = () => {
+    setVisibleCount((prevCount) => prevCount + 6);
+  };
 
-      {/* Product List */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-        {products.map((product) => (
+  return (
+    <div className="container mx-auto p-4 mt-24">
+      <div className="text-center mb-12 relative">
+        <h2 className="text-lg text-yellow-500 font-semibold pt-4">
+          Our Products
+        </h2>
+        <h1 className="text-4xl font-bold text-[#0e2c6c] mt-2">
+          Bundles Offer
+        </h1>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.slice(0, visibleCount).map((product) => (
           <div
             key={product._id}
-            className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-4 flex flex-col items-center"
+            className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-96"
           >
-            {/* Product Image */}
-            <div className="relative w-full h-32 sm:h-40 flex-shrink-0">
-              {product.soldOut && (
-                <span className="absolute top-2 left-2 bg-gray-700 text-white text-xs px-2 py-1 rounded">
-                  Sold out
-                </span>
-              )}
-              {product.onSale && (
-                <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-                  Sale
-                </span>
-              )}
-              <Link to={`/product/${product._id}`}>
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
-                />
-              </Link>
-            </div>
-
-            {/* Product Details */}
-            <div className="text-center mt-2">
-              <Link to={`/product/${product._id}`}>
-                <h3 className="text-lg font-semibold hover:text-purple-600">
-                  {product.title}
-                </h3>
-              </Link>
-
-              {/* Product Pricing */}
-              <p className="text-gray-600 text-lg mt-1">
-                <span className="line-through text-gray-500 mr-2">
-                  LE {Math.round(product.price * 1.4)} EGP
-                </span>
-                <span className="text-red-600 font-bold">
+            <Link to={`/product/${product._id}`} className="block h-full">
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+              />
+            </Link>
+            <div className="p-4 flex flex-col flex-grow justify-between">
+              <h3 className="text-lg font-semibold text-gray-800 hover:text-[#0e2c6c] transition-colors duration-200 h-12 line-clamp-2">
+                {product.title}
+              </h3>
+              <div className="mt-2 flex items-center justify-between">
+                <p className="text-xl font-bold text-[#0e2c6c]">
                   LE {product.price} EGP
-                </span>
-              </p>
-
-              {/* Add to Cart Button */}
-              {!product.soldOut && (
+                </p>
                 <button
-                  className="mt-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg w-full"
-                  onClick={() => handleAddToCart(product)}
+                  className="flex items-center justify-center w-10 h-10 bg-[#0e2c6c] hover:bg-yellow-500 text-white rounded-full shadow-md transition-colors duration-300"
+                  onClick={(e) => handleAddToCart(product, e)}
                 >
-                  🛒 Add to Cart
+                  <FaShoppingCart size={16} />
                 </button>
-              )}
+              </div>
             </div>
           </div>
         ))}
       </div>
+
+      {visibleCount < products.length && (
+        <div className="text-center mt-8">
+          <button
+            className="px-6 py-3 bg-[#0e2c6c] text-white font-semibold rounded-md shadow-md transition duration-300"
+            onClick={showMoreProducts}
+          >
+            Show More
+          </button>
+        </div>
+      )}
     </div>
   );
 }

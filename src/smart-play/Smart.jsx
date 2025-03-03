@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../rtk/slices/productsSlice";
 import { addToCart } from "../rtk/slices/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function Smart() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { products, status, error } = useSelector((state) => state.products);
   const [quantities, setQuantities] = useState({});
   const [sortType, setSortType] = useState("az");
@@ -51,17 +52,24 @@ export default function Smart() {
       })
     );
     Swal.fire({
-      title: "Added to Cart!",
+      title: "Added to Cart! 🛒",
       text: `${toy.title} has been added to your cart.`,
       icon: "success",
-      confirmButtonText: "OK",
+      showCancelButton: true,
+      confirmButtonText: "Go to Cart",
+      cancelButtonText: "Continue Shopping",
+      confirmButtonColor: "#0e2c6c",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/cart"); // ✅ Navigate correctly
+      }
     });
   };
 
   return (
     <div className="p-6 mt-[200px]">
       <h2 className="text-3xl font-bold text-blue-700 mb-4 text-center">
-        🚗 Smart play
+        🚗 Smart Play
       </h2>
 
       {/* Error Handling */}
@@ -167,7 +175,7 @@ export default function Smart() {
           ))
         ) : (
           <p className="text-gray-500 text-center">
-            No toys available for boys.
+            No toys available for smart play.
           </p>
         )}
       </div>

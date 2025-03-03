@@ -29,14 +29,16 @@ export default function AllProducts() {
 
     // SweetAlert Confirmation
     Swal.fire({
-      title: "Added to Cart!",
-      text: `${product.title} has been added to your cart.`,
+      title: "Added to Cart! 🛒",
+      text: `${product.title}  added to your cart.`,
       icon: "success",
+      showCancelButton: true,
       confirmButtonText: "Go to Cart",
+      cancelButtonText: "Continue Shopping",
       confirmButtonColor: "#0e2c6c",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/cart"); // Navigate to cart page
+        navigate("/cart"); // ✅ Navigate correctly
       }
     });
   };

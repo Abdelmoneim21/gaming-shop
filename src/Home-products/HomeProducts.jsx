@@ -21,7 +21,7 @@ export default function HomeProducts() {
       <h2 className="text-lg text-center text-yellow-500 font-semibold">
         Our Products
       </h2>
-      <h1 className="text-3xl font-bold text-center text-purple-700 mb-6">
+      <h1 className="text-3xl font-bold text-center text-[#0e2c6c] mb-6">
         All Products
       </h1>
 
@@ -49,13 +49,13 @@ export default function HomeProducts() {
 
             {/* Product Name */}
             <Link to={`/product/${product._id}`}>
-              <h3 className="text-sm font-semibold mt-2 hover:text-purple-600">
+              <h3 className="text-sm font-semibold mt-2 hover:text-[#0e2c6c]">
                 {product.title}
               </h3>
             </Link>
 
             {/* Product Price */}
-            <p className="text-purple-800 font-bold text-md mt-1">
+            <p className="text-[#0e2c6c] font-bold text-md mt-1">
               LE {product.price}.00 EGP
             </p>
           </div>
@@ -67,7 +67,7 @@ export default function HomeProducts() {
         <div className="flex justify-center mt-6">
           <button
             onClick={() => setShowAll(true)}
-            className="bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg hover:bg-purple-800 transition duration-300"
+            className="bg-[#0e2c6c] text-white font-semibold px-6 py-2 rounded-lg hover:bg-purple-800 transition duration-300"
           >
             Show All Products
           </button>

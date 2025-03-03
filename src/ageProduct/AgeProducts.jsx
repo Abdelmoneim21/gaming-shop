@@ -16,14 +16,16 @@ function AgeProducts() {
     dispatch(addToCart(product));
 
     Swal.fire({
-      title: "Added to Cart!",
-      text: `${product.title} has been added to your cart.`,
+      title: "Added to Cart! 🛒",
+      text: `${product.title}  added to your cart.`,
       icon: "success",
+      showCancelButton: true,
       confirmButtonText: "Go to Cart",
+      cancelButtonText: "Continue Shopping",
       confirmButtonColor: "#0e2c6c",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/cart");
+        navigate("/cart"); // ✅ Navigate correctly
       }
     });
   };

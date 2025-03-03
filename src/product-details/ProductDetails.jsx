@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { addToCart } from "../rtk/slices/cartSlice"; // ✅ Import Redux action
 import { FaShoppingCart } from "react-icons/fa"; // ✅ Shopping Cart Icon
 import Swal from "sweetalert2"; // ✅ Import SweetAlert
@@ -11,6 +11,7 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const token = localStorage.getItem("token");
 
@@ -20,8 +21,13 @@ export default function ProductDetails() {
       icon: "success",
       title: "Added to Cart!",
       text: `${product.title} has been added to your cart.`,
-      timer: 1500,
-      showConfirmButton: false,
+      showCancelButton: true,
+      confirmButtonText: "Go to Cart",
+      cancelButtonText: "Continue Shopping",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/cart");
+      }
     });
   };
 
@@ -64,7 +70,7 @@ export default function ProductDetails() {
 
   return (
     <div className="flex justify-center items-center mt-[100px] min-h-screen bg-gray-100">
-      <div className="bg-white rounded-3xl shadow-lg  p-6">
+      <div className="bg-white rounded-3xl shadow-lg p-6">
         {/* Product Image */}
         <div className="rounded-xl overflow-hidden">
           <img
@@ -107,7 +113,7 @@ export default function ProductDetails() {
         {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
-          className="mt-5 w-[50%] m-auto bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition"
+          className="mt-5 w-[50%] m-auto bg-[#0e2c6c] hover:bg-yellow-500 text-[#fff] font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition"
         >
           <FaShoppingCart /> Add to Cart
         </button>
