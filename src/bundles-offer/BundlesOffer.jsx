@@ -57,7 +57,7 @@ export default function BundlesOffer() {
         {products.slice(0, visibleCount).map((product) => (
           <div
             key={product._id}
-            className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-96"
+            className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-100"
           >
             <Link to={`/product/${product._id}`} className="block h-full">
               <img

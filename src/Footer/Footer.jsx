@@ -71,16 +71,26 @@ function Footer() {
             FOLLOW US
           </h1>
           <div className="flex justify-center md:justify-start gap-6">
-            <FaFacebook
-              size={30}
-              color="#fff"
-              className="cursor-pointer hover:scale-110 duration-200"
-            />
-            <FaInstagram
-              size={30}
-              color="#fff"
-              className="cursor-pointer hover:scale-110 duration-200"
-            />
+            <a
+              href="https://web.facebook.com/profile.php?id=61573918853545&mibextid=wwXIfr&rdid=Ty9EEXF91aSOelfb&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F1Gmr7cX6Mq%2F%3Fmibextid%3DwwXIfr%26_rdc%3D1%26_rdr#"
+              target="blank"
+            >
+              <FaFacebook
+                size={30}
+                color="#fff"
+                className="cursor-pointer hover:scale-110 duration-200"
+              />
+            </a>
+            <a
+              href="https://www.instagram.com/babaeid_toys?igsh=MWl4MHlmMmtmMXEwOA%3D%3D&utm_source=qr"
+              target="blank"
+            >
+              <FaInstagram
+                size={30}
+                color="#fff"
+                className="cursor-pointer hover:scale-110 duration-200"
+              />
+            </a>
           </div>
         </div>
       </div>

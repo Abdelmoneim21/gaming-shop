@@ -79,7 +79,7 @@ export default function Cart() {
           {/* Remove Item */}
           <button
             onClick={() => dispatch(removeFromCart(item.id))}
-            className="bg-red-500 text-white px-3 py-1 rounded-lg mt-2 sm:mt-0 hover:bg-red-600 transition"
+            className="bg-red-500 text-white  px-3 py-1 rounded-lg mt-5 sm:mt-0 hover:bg-red-600 transition"
           >
             🗑️
           </button>
@@ -88,7 +88,7 @@ export default function Cart() {
 
       {/* Cart Footer */}
       <div className="text-right mt-6">
-        <h2 className="text-xl font-bold">Total: LE{totalPrice.toFixed(2)}</h2>
+        <h2 className="text-xl font-bold">Total: LE {totalPrice.toFixed(2)}</h2>
         <button
           onClick={() => dispatch(clearCart())}
           className="bg-gray-800 text-white px-6 py-2 rounded-lg mt-4 hover:bg-gray-900 transition"

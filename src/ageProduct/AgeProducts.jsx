@@ -61,7 +61,7 @@ function AgeProducts() {
               <div className="flex justify-center mt-3">
                 <button
                   onClick={() => handleAddToCart(product)}
-                  className="w-full px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition flex items-center justify-center gap-2"
+                  className="w-full px-4 py-2 bg-[#0e2c6c] text-white rounded-lg hover:bg-orange-600 transition flex items-center justify-center gap-2"
                 >
                   🛒 Add to Cart
                 </button>

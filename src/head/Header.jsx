@@ -23,14 +23,14 @@ function Header() {
   );
 
   return (
-    <div className="w-[90%] sm:mt-[200px] mx-auto mt-[120px] flex flex-col gap-4 relative">
+    <div className="w-[90%] sm:mt-[200px] mx-auto lg:mt-[250px] flex flex-col gap-4 relative">
       {/* Search & Image Section */}
       <div className="flex-1 relative">
         {/* Search Bar */}
         <input
           type="search"
           placeholder="Search for toys..."
-          className="p-3 bg-gray-200 rounded-lg w-full border focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="p-3 lg:p-5 bg-gray-200 rounded-lg w-full border focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
