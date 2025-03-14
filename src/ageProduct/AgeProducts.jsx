@@ -31,7 +31,7 @@ function AgeProducts() {
   };
 
   return (
-    <div className="w-[90%] mx-auto mt-[150px]">
+    <div className="w-[90%] md:mt-[250px] mx-auto mt-[150px]">
       <h1 className="text-2xl font-bold text-[#0e2c6c] mb-6 text-center">
         Toys for Age {age} Years
       </h1>
